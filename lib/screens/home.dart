@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodDelivery/screens/restaurants.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/title.dart';
 
@@ -67,31 +68,7 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 10,
             ),
-            // the styling of the different restaurants lies here
-            Column(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 0,
-                              // color: orange,
-                              offset: Offset(1, 1),
-                            ),
-                          ],
-                        ),
-                        child: Image.asset('images/res1.jpg', height: 200, width: 170, fit: BoxFit.fill),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )
+            Restaurnats()
           ],
         ),
       ),
