@@ -5,6 +5,7 @@ class RestaurantList {
   String hotelName;
   String address;
   bool delivery;
+  String deliveryPrice;
 
-  RestaurantList({@required this.image,@required this.hotelName,@required this.address,@required this.delivery});
+  RestaurantList({@required this.image, @required this.hotelName, @required this.address, this.delivery, this.deliveryPrice});
 }

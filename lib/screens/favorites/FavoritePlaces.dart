@@ -10,11 +10,11 @@ class FavoritePlaces extends StatefulWidget {
 
 class _FavoritePlacesState extends State<FavoritePlaces> {
   List<RestaurantList> favorites = [
-    RestaurantList(image: 'res1.jpg', hotelName: 'shirikisho', address: 'kimathi', delivery: true),
-    RestaurantList(image: 'res2.jpg', hotelName: 'mbui hotel', address: 'lower dedan gate', delivery: true),
-    RestaurantList(image: 'res3.jpg', hotelName: 'Vienna hotel', address: '1099 kimathi way', delivery: false),
-    RestaurantList(image: 'res4.jpg', hotelName: 'Patto\'s Place', address: '1122 Kingongo', delivery: true),
-    RestaurantList(image: 'res5.jpg', hotelName: 'Fish Zone', address: 'Kings Market', delivery: true),
+    RestaurantList(image: 'res1.jpg', hotelName: 'shirikisho', address: 'kimathi', delivery: true, deliveryPrice: '120'),
+    RestaurantList(image: 'res2.jpg', hotelName: 'mbui hotel', address: 'lower dedan gate', delivery: true, deliveryPrice: '110'),
+    RestaurantList(image: 'res3.jpg', hotelName: 'Vienna', address: '1099 kimathi way', deliveryPrice: '60'),
+    RestaurantList(image: 'res4.jpg', hotelName: 'Patto\'s Place', address: '12 Kingongo', delivery: true, deliveryPrice: '90'),
+    RestaurantList(image: 'res5.jpg', hotelName: 'Fish Zone', address: 'Kings Market', delivery: true, deliveryPrice: '80'),
   ];
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,15 @@ class _FavoritePlacesState extends State<FavoritePlaces> {
                                               color: white,
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.bold)))
-                                  : SizedBox.shrink(),
+                                  : Material(color: orange,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(3))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2),
+                                        child: CustomText(color: white,
+                                          text: 'Ksh ${favorites[index].deliveryPrice}',
+                                          size: 13,
+                                        ),
+                                      )),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8.0),

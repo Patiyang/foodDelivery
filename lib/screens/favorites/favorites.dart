@@ -16,7 +16,7 @@ class Favorites extends StatefulWidget {
 class _FavoritesState extends State<Favorites> {
   Pages selectedpage = Pages.places;
   Color active = orange;
-  Color inactive = grey;
+  Color inactive = grey[200];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +39,7 @@ class _FavoritesState extends State<Favorites> {
                   color: white,
                   child: Center(
                     child: FavoriteButton(
+                      color: selectedpage == Pages.places ? active : inactive,
                       icon: Icons.restaurant,
                       text: 'Places',
                       callback: () {
@@ -54,6 +55,7 @@ class _FavoritesState extends State<Favorites> {
                   color: white,
                   child: Center(
                       child: FavoriteButton(
+                    color: selectedpage == Pages.foods ? active : inactive,
                     icon: Icons.fastfood,
                     text: 'Foods',
                     callback: () {
