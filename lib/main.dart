@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodDelivery/screens/home.dart';
 import 'package:foodDelivery/styling.dart';
+
+import 'screens/loginSignUp/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(),
+      home: Login(),
     );
   }
 }

@@ -9,14 +9,16 @@ class CustomText extends StatelessWidget {
   final FontWeight fontWeight;
   final TextOverflow overflow;
   final int maxLines;
+  final TextAlign textAlign;
 
   const CustomText(
-      {Key key, @required this.text, this.size, this.color, this.fontWeight, this.letterSpacing, this.overflow, this.maxLines})
+      {Key key, @required this.text, this.size, this.color, this.fontWeight, this.letterSpacing, this.overflow, this.maxLines, this.textAlign, })
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign:textAlign ,
       maxLines: maxLines ?? 1,
       overflow: overflow ?? TextOverflow.fade,
       style: TextStyle(
@@ -27,5 +29,3 @@ class CustomText extends StatelessWidget {
     );
   }
 }
-
-
