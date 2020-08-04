@@ -5,8 +5,8 @@ class User {
   static const String userName = 'userName';
   static const String password = 'password';
   static const String phoneNumber = 'phoneNumber';
-    static const String email = 'emailAddress';
-
+  static const String email = 'emailAddress';
+  static const String id = 'id';
 
   User({this.userId});
 }

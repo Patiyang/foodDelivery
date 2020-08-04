@@ -10,7 +10,7 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(alignment: Alignment.center,
       width: MediaQuery.of(context).size.width,
-      color: white.withOpacity(.8),
+      color: white.withOpacity(.3),
       child: Column(mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CircularProgressIndicator(),

@@ -7,8 +7,10 @@ class CustomButton extends StatefulWidget {
   final icon;
   final String text;
   final Color color;
+  final double size;
 
-  const CustomButton({Key key, @required this.callback, @required this.icon, @required this.text, this.color}) : super(key: key);
+  const CustomButton({Key key, @required this.callback, @required this.icon, @required this.text, this.color, this.size})
+      : super(key: key);
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -23,11 +25,15 @@ class _CustomButtonState extends State<CustomButton> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Icon(widget.icon, color: widget.color,),
+          Icon(
+            widget.icon,
+            color: widget.color,
+          ),
           CustomText(
-            text: widget.text, color: widget.color,
+            text: widget.text,
+            color: widget.color,
             fontWeight: FontWeight.normal,
-            size: 13,
+            size: widget.size??13,
           ),
         ],
       ),

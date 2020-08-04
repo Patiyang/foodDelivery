@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:foodDelivery/models/users.dart';
 import 'package:foodDelivery/screens/explore.dart';
 import 'package:foodDelivery/screens/favorites/favorites.dart';
 import 'package:foodDelivery/screens/orders.dart';
 import 'package:foodDelivery/screens/profile.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customButton.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum Pages { home, orders, favorites, profile }
 
@@ -20,6 +22,7 @@ class _HomeState extends State<Home> {
   Color inactive = black;
   @override
   void initState() {
+    // getEmail();
     super.initState();
   }
 
@@ -34,42 +37,49 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
                 boxShadow: [BoxShadow(blurRadius: 1, color: grey[100], offset: Offset(2, 1))]),
             height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                CustomButton(
-                  callback: () => setState(() {
-                    _selectedPage = Pages.home;
-                  }),
-                  icon: Icons.home,
-                  text: 'Explore',
-                  color: _selectedPage == Pages.home ? orange : black,
-                ),
-                CustomButton(
+            child: FittedBox(fit: BoxFit.fitWidth,
+                          child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  CustomButton(
                     callback: () => setState(() {
-                          _selectedPage = Pages.orders;
-                        }),
-                    icon: Icons.shopping_cart,
-                    text: 'My Orders',
-                    color: _selectedPage == Pages.orders ? orange : black),
-                CustomButton(
-                    callback: () => setState(() {
-                          _selectedPage = Pages.favorites;
-                        }),
-                    icon: Icons.bookmark,
-                    text: 'Favorites',
-                    color: _selectedPage == Pages.favorites ? orange : black),
-                CustomButton(
-                    callback: () => setState(() {
-                          _selectedPage = Pages.profile;
-                        }),
-                    icon: Icons.person,
-                    text: 'Profile',
-                    color: _selectedPage == Pages.profile ? orange : black),
-              ],
+                      _selectedPage = Pages.home;
+                    }),
+                    icon: Icons.home,
+                    text: 'Explore',
+                    color: _selectedPage == Pages.home ? orange : black,
+                  ),
+                  CustomButton(
+                      callback: () => setState(() {
+                            _selectedPage = Pages.orders;
+                          }),
+                      icon: Icons.shopping_cart,
+                      text: 'My Orders',
+                      color: _selectedPage == Pages.orders ? orange : black),
+                  CustomButton(
+                      callback: () => setState(() {
+                            _selectedPage = Pages.favorites;
+                          }),
+                      icon: Icons.bookmark,
+                      text: 'Favorites',
+                      color: _selectedPage == Pages.favorites ? orange : black),
+                  CustomButton(
+                      callback: () => setState(() {
+                            _selectedPage = Pages.profile;
+                          }),
+                      icon: Icons.person,
+                      text: 'Profile',
+                      color: _selectedPage == Pages.profile ? orange : black),
+                ],
+              ),
             )),
       ),
     );
+  }
+
+  getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString(User.email));
   }
 
   Widget loadScreen() {

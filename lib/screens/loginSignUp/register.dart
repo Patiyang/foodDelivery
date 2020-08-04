@@ -30,8 +30,11 @@ class _RegisterState extends State<Register> {
   UserProvider userProvider = new UserProvider();
   UserDataBase userDataBase = new UserDataBase();
   QuerySnapshot snapshot;
+  Firestore firestore = Firestore.instance;
   String userName;
   String userEmail;
+  String phoneNumber;
+  String userId;
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -47,36 +50,19 @@ class _RegisterState extends State<Register> {
           Form(
             key: formKey,
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     CircleAvatar(
-                      radius: 70,
+                      radius: 50,
                       child: Icon(
                         Icons.image,
-                        size: 60,
+                        size: 30,
                       ),
                     ),
                     SizedBox(height: 10),
-                    // Container(
-                    //   height: 100,
-                    //   child: Column(
-                    //     children: <Widget>[
-                    //       CustomText(
-                    //           text: 'Hello Patrick',
-                    //           size: 50,
-                    //           fontWeight: FontWeight.w400,
-                    //           color: white,
-                    //           textAlign: TextAlign.left),
-                    //       SizedBox(
-                    //         height: 10,
-                    //       ),
-                    //       CustomText(text: 'Sign Into Your Account', size: 24, fontWeight: FontWeight.w300, color: white)
-                    //     ],
-                    //   ),
-                    // ),
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
                       child: CustomTextField(
@@ -108,23 +94,6 @@ class _RegisterState extends State<Register> {
                         // iconOne: Icons.lock,
                         hint: 'LastName',
                         controller: lastNameController,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
-                      child: CustomTextField(
-                        validator: (v) {
-                          if (v.isEmpty) {
-                            return 'UserName field cannot be left empty';
-                          }
-
-                          return null;
-                        },
-                        containerColor: white.withOpacity(.8),
-                        iconOne: Icons.person_add,
-                        hint: 'UserName',
-                        controller: userNameController,
                       ),
                     ),
                     SizedBox(height: 8),
@@ -170,50 +139,56 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    CustomText(
-                        textAlign: TextAlign.right,
-                        text: 'Recover Password?',
-                        color: white,
-                        fontWeight: FontWeight.bold,
-                        size: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: CustomText(
+                          textAlign: TextAlign.right,
+                          text: 'Recover Password?',
+                          color: white,
+                          fontWeight: FontWeight.bold,
+                          size: 20),
+                    ),
                     SizedBox(height: 30),
-                    Container(
-                      width: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: CustomText(
-                              text: 'Sign Up',
-                              color: white,
-                              size: 30,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            child: Container(
-                              width: 60,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(colors: [white, orange]),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Container(
+                        width: 30,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: CustomText(
+                                text: 'Sign Up',
+                                color: white,
+                                size: 30,
+                                fontWeight: FontWeight.bold,
                               ),
-                              child: MaterialButton(
-                                splashColor: orange,
-                                minWidth: 30,
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              child: Container(
+                                width: 60,
                                 height: 40,
-                                shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                                onPressed: signUp,
-                                child: Icon(Icons.arrow_forward),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [white, orange]),
+                                ),
+                                child: MaterialButton(
+                                  splashColor: orange,
+                                  minWidth: 30,
+                                  height: 40,
+                                  shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                  onPressed: signUp,
+                                  child: Icon(Icons.arrow_forward),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 25,
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -241,36 +216,26 @@ class _RegisterState extends State<Register> {
 
   signUp() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    prefs.setString(User.email, emailController.text);
     if (formKey.currentState.validate()) {
       setState(() {
         loading = true;
       });
-      await userDataBase.createUser(firstNameController.text, lastNameController.text, userName, emailController.text,
-          passwordController.text, phoneNumberController.text);
-      await userProvider.signUp(emailController.text, passwordController.text).then((value) => () {
-            userDataBase.getUserByEmail(emailController.text).then((val) {
-              snapshot = val;
-              userNameController.text = val.documents[0].data[User.userName].toString();
-              emailController.text = val.documents[0].data[User.email].toString();
-              phoneNumberController.text = val.documents[0].data[User.phoneNumber].toString();
-              if (userNameController.text.isNotEmpty) {
-                Fluttertoast.showToast(msg: 'UserName already in use');
-              } else if (userNameController.text.isEmpty) {
-                prefs.setString('userName', userNameController.text);
-              }
-              if (emailController.text.isNotEmpty) {
-                Fluttertoast.showToast(msg: 'Email already in use');
-              } else if (emailController.text.isEmpty) {
-                prefs.setString('email', emailController.text);
-              }
-              if (phoneNumberController.text.isNotEmpty) Fluttertoast.showToast(msg: 'PhoneNumber already in use');
-            });
+      userDataBase.getUserByEmail(emailController.text).then((QuerySnapshot snap) async {
+        if (snap.documents.length < 1) {
+          await userDataBase.createUser(
+              firstNameController.text, lastNameController.text, emailController.text, passwordController.text);
+          await userProvider
+              .signUp(emailController.text, passwordController.text)
+              .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Home())));
+        } else {
+          setState(() {
+            formKey.currentState.reset();
+            loading = false;
           });
-      setState(() {
-        loading = false;
+          Fluttertoast.showToast(msg: 'Email already in use');
+        }
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Home()));
     }
   }
 }
