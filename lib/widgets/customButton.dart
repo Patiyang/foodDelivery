@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:foodDelivery/styling.dart';
 import 'customText.dart';
 
+
+///like all the widgets in ths folder, these widgets are meant to make deisgn easier
+///rather than repeading the same widget over and over again, I utilize these instead
 class CustomButton extends StatefulWidget {
   final VoidCallback callback;
   final icon;

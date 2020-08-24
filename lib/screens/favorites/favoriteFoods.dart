@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodDelivery/models/foods.dart';
+import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 
@@ -9,54 +9,11 @@ class FavoriteFoods extends StatefulWidget {
 }
 
 class _FavoriteFoodsState extends State<FavoriteFoods> {
-  List<FoodList> favorites = [
-    FoodList(
-        hotelName: 'mbui',
-        name: 'chapo madondo',
-        image: 'C1.jpg',
-        location: '1122 kimathi way',
-        deliveryTime: '12 minutes',
-        distance: '2km',
-        description: 'this i'),
-    FoodList(
-        hotelName: 'shirikisho',
-        name: 'ugali mayai',
-        image: 'C2.jpg',
-        location: '100m from kens hostel',
-        deliveryTime: '12 minutes',
-        distance: '2km',
-        description: 'this is b'),
-    FoodList(
-        hotelName: 'vienna',
-        name: 'rice mix',
-        image: 'C3.jpg',
-        location: '100m from kens hostel',
-        deliveryTime: '12 minutes',
-        distance: '2km',
-        description: 'this is by '),
-    FoodList(
-        hotelName: 'greens hostel',
-        name: 'ugali pork',
-        image: 'C4.jpg',
-        location: 'Junction stage',
-        deliveryTime: '12 minutes',
-        distance: '2km',
-        description: 'this is by far '),
-    FoodList(
-        hotelName: 'kwa moseh',
-        name: 'chai mandazi',
-        image: 'C5.jpg',
-        location: '100 metres from mt kenya hostels',
-        deliveryTime: '12 minutes',
-        distance: '2km',
-        description: 'this is by far ')
-  ];
-
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
       physics: BouncingScrollPhysics(),
-      itemCount: favorites.length,
+      // itemCount: favorites.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (BuildContext context, int index) {
         return ClipRRect(
@@ -68,7 +25,8 @@ class _FavoriteFoodsState extends State<FavoriteFoods> {
               color: Colors.white,
               boxShadow: [BoxShadow(blurRadius: 1, offset: Offset(.5, .5), color: white)],
             ),
-            child: SingleChildScrollView(physics: BouncingScrollPhysics(),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +37,7 @@ class _FavoriteFoodsState extends State<FavoriteFoods> {
                     children: <Widget>[
                       ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(8)),
-                        child: Image.asset('images/${favorites[index].image}', fit: BoxFit.cover, height: 120, width: 110),
+                        // child: Image.asset('images/${favorites[index].image}', fit: BoxFit.cover, height: 120, width: 110),
                       ),
                     ],
                   ),
@@ -91,9 +49,9 @@ class _FavoriteFoodsState extends State<FavoriteFoods> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              child: CustomText(text: favorites[index].name, maxLines: 1, fontWeight: FontWeight.bold),
+                              // child: CustomText(text: favorites[index].name, maxLines: 1, fontWeight: FontWeight.bold),
                             ),
-                            CustomText(text: favorites[index].hotelName),
+                            // CustomText(text: favorites[index].hotelName),
                             SizedBox(
                               height: 4,
                             ),
@@ -104,7 +62,7 @@ class _FavoriteFoodsState extends State<FavoriteFoods> {
                                 Expanded(
                                   child: Container(
                                     width: MediaQuery.of(context).size.width,
-                                    child: CustomText(maxLines: 2, text: favorites[index].location, color: grey),
+                                    // child: CustomText(maxLines: 2, text: favorites[index].location, color: grey),
                                   ),
                                 ),
                               ],

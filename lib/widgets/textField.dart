@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), boxShadow: [
-        BoxShadow(blurRadius: 1, color: containerColor ?? white, offset: Offset(1, 1), spreadRadius: 0),
+        BoxShadow(blurRadius: 0, color: containerColor ?? white, spreadRadius: 0),
       ]),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 11),

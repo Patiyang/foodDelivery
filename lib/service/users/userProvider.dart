@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodDelivery/models/users.dart';
 
-class UserProvider {
+class UserService {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   User _firebaseUser(FirebaseUser user) {

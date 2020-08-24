@@ -1,102 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:foodDelivery/models/users.dart';
-import 'package:foodDelivery/screens/explore.dart';
-import 'package:foodDelivery/screens/favorites/favorites.dart';
-import 'package:foodDelivery/screens/orders.dart';
-import 'package:foodDelivery/screens/profile.dart';
-import 'package:foodDelivery/styling.dart';
-import 'package:foodDelivery/widgets/customButton.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:foodDelivery/screens/recentProducts.dart';
+import 'package:foodDelivery/screens/recentShops.dart';
+import 'package:foodDelivery/widgets/customText.dart';
 
-enum Pages { home, orders, favorites, profile }
+import '../styling.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
-  final searchController = new TextEditingController();
-  Pages _selectedPage = Pages.home;
-  Color active = orange;
-  Color inactive = black;
-  @override
-  void initState() {
-    // getEmail();
-    super.initState();
-  }
-
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: white,
-        body: loadScreen(),
-        bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                boxShadow: [BoxShadow(blurRadius: 1, color: grey[100], offset: Offset(2, 1))]),
-            height: 50,
-            child: FittedBox(fit: BoxFit.fitWidth,
-                          child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  CustomButton(
-                    callback: () => setState(() {
-                      _selectedPage = Pages.home;
-                    }),
-                    icon: Icons.home,
-                    text: 'Explore',
-                    color: _selectedPage == Pages.home ? orange : black,
+    return Scaffold(
+      body: ListView(
+        children: <Widget>[
+          Container(
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    //here is the styling of the search bar
+                    child: Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), boxShadow: [
+                        BoxShadow(blurRadius: 2, color: grey[100], offset: Offset(1, 1)),
+                      ]),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Search Products or Shops',
+                              hintStyle: TextStyle(color: grey),
+                            ),
+                            style: TextStyle(),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                  CustomButton(
-                      callback: () => setState(() {
-                            _selectedPage = Pages.orders;
-                          }),
-                      icon: Icons.shopping_cart,
-                      text: 'My Orders',
-                      color: _selectedPage == Pages.orders ? orange : black),
-                  CustomButton(
-                      callback: () => setState(() {
-                            _selectedPage = Pages.favorites;
-                          }),
-                      icon: Icons.bookmark,
-                      text: 'Favorites',
-                      color: _selectedPage == Pages.favorites ? orange : black),
-                  CustomButton(
-                      callback: () => setState(() {
-                            _selectedPage = Pages.profile;
-                          }),
-                      icon: Icons.person,
-                      text: 'Profile',
-                      color: _selectedPage == Pages.profile ? orange : black),
+                ),
+                Container(
+                    decoration: BoxDecoration(
+                      color: grey[100],
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                    ),
+                    child: IconButton(icon: Icon(Icons.filter_list), onPressed: () {})),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width - 16,
+              child: Row(
+                children: <Widget>[
+                  CustomText(
+                    text: 'Discover New Places',
+                    size: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Spacer(),
+                  GestureDetector(child: Icon(Icons.arrow_forward_ios))
                 ],
               ),
-            )),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Restaurnats(),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width - 16,
+              child: Row(
+                children: <Widget>[
+                  CustomText(
+                    text: 'Latest Products',
+                    size: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Spacer(),
+                  GestureDetector(child: Icon(Icons.arrow_forward_ios))
+                ],
+              ),
+            ),
+          ),
+          RecentProducts()
+        ],
       ),
     );
-  }
-
-  getEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString(User.email));
-  }
-
-  Widget loadScreen() {
-    switch (_selectedPage) {
-      case Pages.home:
-        return HomePage();
-        break;
-      case Pages.orders:
-        return Orders();
-        break;
-      case Pages.favorites:
-        return Favorites();
-        break;
-      case Pages.profile:
-        return Profile();
-      default:
-        return Container();
-    }
   }
 }

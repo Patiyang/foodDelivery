@@ -3,15 +3,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/users.dart';
-import 'package:foodDelivery/provider/users/userProvider.dart';
-import 'package:foodDelivery/provider/users/usersDatabase.dart';
-import 'package:foodDelivery/screens/home.dart';
+
 import 'package:foodDelivery/screens/loginSignUp/register.dart';
+import 'package:foodDelivery/service/users/userProvider.dart';
+import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../homeNavigation.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   final formKey = GlobalKey<FormState>();
-  UserProvider userProvider = new UserProvider();
+  UserService userProvider = new UserService();
   UserDataBase userDataBase = new UserDataBase();
   QuerySnapshot snapshot;
   String email = '';
@@ -30,15 +32,15 @@ class _LoginState extends State<Login> {
   bool loading = false;
   @override
   void initState() {
-    super.initState();
     getUserName();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: email.length < 1
+          body: email.length == 0
               ? Stack(
                   children: <Widget>[
                     Container(
@@ -186,13 +188,21 @@ class _LoginState extends State<Login> {
                     Visibility(visible: loading == true, child: Loading())
                   ],
                 )
-              : Home()),
+              : HomeNavigation()),
     );
   }
 
   getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    email = prefs.getString(User.email);
+    var emailLength = prefs.getString(User.emailAddress);
+    if (emailLength!=null) {
+      setState(() {
+        email = emailLength;
+      });
+    } else if(emailLength==null) {
+      email = '';
+    }
+
     print('The email address is ' + email);
   }
 
@@ -206,21 +216,21 @@ class _LoginState extends State<Login> {
         snapshot = snap;
         if (snap.documents.length > 0) {
           password = snap.documents[0].data[User.password];
-          email = snap.documents[0].data[User.email];
+          email = snap.documents[0].data[User.emailAddress];
           if (email == emailController.text && password == passwordController.text) {
-            prefs.setString(User.email, email);
+            prefs.setString(User.emailAddress, email);
             await userProvider
                 .signIn(emailController.text, passwordController.text)
                 .then((value) => () {
-                      email = value == true ? prefs.getString(User.email) : '';
+                      email = value == true ? prefs.getString(User.emailAddress) : '';
                     })
-                .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Home())));
+                .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeNavigation())));
           }
         }
         if (snap.documents.length < 1 || password != passwordController.text) {
           setState(() {
             loading = false;
-            prefs.setString(User.email, '');
+            prefs.setString(User.emailAddress, '');
           });
           Fluttertoast.showToast(msg: 'Wrong Email Or Password');
         }

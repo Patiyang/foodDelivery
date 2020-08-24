@@ -3,15 +3,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/users.dart';
-import 'package:foodDelivery/provider/users/userProvider.dart';
-import 'package:foodDelivery/provider/users/usersDatabase.dart';
-import 'package:foodDelivery/screens/home.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
+import 'package:foodDelivery/service/users/userProvider.dart';
+import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../homeNavigation.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController passwordController = new TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  UserProvider userProvider = new UserProvider();
+  UserService userProvider = new UserService();
   UserDataBase userDataBase = new UserDataBase();
   QuerySnapshot snapshot;
   Firestore firestore = Firestore.instance;
@@ -216,7 +217,7 @@ class _RegisterState extends State<Register> {
 
   signUp() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(User.email, emailController.text);
+    prefs.setString(User.emailAddress, emailController.text);
     if (formKey.currentState.validate()) {
       setState(() {
         loading = true;
@@ -227,7 +228,7 @@ class _RegisterState extends State<Register> {
               firstNameController.text, lastNameController.text, emailController.text, passwordController.text);
           await userProvider
               .signUp(emailController.text, passwordController.text)
-              .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Home())));
+              .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeNavigation())));
         } else {
           setState(() {
             formKey.currentState.reset();

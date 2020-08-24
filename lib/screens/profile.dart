@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/users.dart';
-import 'package:foodDelivery/provider/users/userProvider.dart';
+import 'package:foodDelivery/service/users/userProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'loginSignUp/login.dart';
@@ -11,7 +11,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  UserProvider userProvider = new UserProvider();
+  UserService userProvider = new UserService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _ProfileState extends State<Profile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userProvider.signOut().then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Login())));
     setState(() {
-      prefs.setString(User.email, '');
+      prefs.setString(User.emailAddress, '');
     });
   }
 }

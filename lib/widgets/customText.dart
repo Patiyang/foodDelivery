@@ -20,9 +20,9 @@ class CustomText extends StatelessWidget {
       text,
       textAlign:textAlign ,
       maxLines: maxLines ?? 1,
-      overflow: overflow ?? TextOverflow.fade,
+      overflow: overflow ?? TextOverflow.ellipsis,
       style: TextStyle(
-          fontSize: size ?? 13.0,
+          fontSize: size,
           color: color ?? black,
           fontWeight: fontWeight ?? FontWeight.normal,
           letterSpacing: letterSpacing ?? 0),

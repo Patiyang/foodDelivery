@@ -15,7 +15,7 @@ class UserDataBase {
         User.firstName: firstName,
         User.lastName: lastName,
         User.password: password,
-        User.email: emailAddress,
+        User.emailAddress: emailAddress,
         User.id: userId
       });
     } catch (e) {
@@ -25,6 +25,7 @@ class UserDataBase {
 
   deleteUser(String id) {
     try {
+      // _firestore.collection(users).document().snapshots();
       return _firestore.collection(users).document(id).delete();
     } catch (e) {
       print(e.toString());
@@ -32,6 +33,6 @@ class UserDataBase {
   }
 
   getUserByEmail(String email) {
-    return _firestore.collection(users).where(User.email, isEqualTo: email).getDocuments();
+    return _firestore.collection(users).where(User.emailAddress, isEqualTo: email).getDocuments();
   }
 }
