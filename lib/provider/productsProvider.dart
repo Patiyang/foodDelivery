@@ -15,4 +15,5 @@ class ProductsProvider with ChangeNotifier {
     products = await _productsService.fetchProducts();
     notifyListeners();
   }
+  
 }

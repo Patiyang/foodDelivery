@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodDelivery/screens/recentProducts.dart';
-import 'package:foodDelivery/screens/recentShops.dart';
+import 'package:foodDelivery/screens/products/recentProducts.dart';
+import 'package:foodDelivery/screens/shops/recentShops.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 
 import '../styling.dart';
@@ -11,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   CustomText(
                     text: 'Discover New Places',
-                    size: 30,
+                    size: 20,
                     fontWeight: FontWeight.bold,
                   ),
                   Spacer(),
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   CustomText(
                     text: 'Latest Products',
-                    size: 30,
+                    size: 20,
                     fontWeight: FontWeight.bold,
                   ),
                   Spacer(),
@@ -97,9 +99,28 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          RecentProducts()
+          RecentProducts(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width - 16,
+              child: Row(
+                children: <Widget>[
+                  CustomText(
+                    text: 'Recommended Products',
+                    size: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  Spacer(),
+                  GestureDetector(child: Icon(Icons.arrow_forward_ios))
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
+
+  
 }

@@ -17,7 +17,7 @@ void main() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
+        theme: ThemeData(appBarTheme: AppBarTheme(color: orange[200]),
           scaffoldBackgroundColor: white,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: grey[700]),
           cursorColor: black,

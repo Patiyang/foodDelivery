@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/styling.dart';
-import 'package:foodDelivery/widgets/customText.dart';
 
 class FavoritePlaces extends StatefulWidget {
   @override

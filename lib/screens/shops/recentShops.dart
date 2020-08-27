@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/shops.dart';
 import 'package:foodDelivery/provider/shopProvider.dart';
+import 'package:foodDelivery/screens/shops/singleShop.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:provider/provider.dart';
 
-class Restaurnats extends StatelessWidget {
+class Restaurnats extends StatefulWidget {
+  @override
+  _RestaurnatsState createState() => _RestaurnatsState();
+}
+
+class _RestaurnatsState extends State<Restaurnats> {
   @override
   Widget build(BuildContext context) {
     final shopProvider = Provider.of<ShopProvider>(context);
@@ -17,8 +23,17 @@ class Restaurnats extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: shopProvider.shops.length,
         itemBuilder: (BuildContext context, int index) {
-          return ShopsCard(
-            shopModel: shopProvider.shops[index],
+          return GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SingleShop(
+                    shopModel: shopProvider.shops[index],
+                  ),
+                )),
+            child: ShopsCard(
+              shopModel: shopProvider.shops[index],
+            ),
           );
         },
       ),
@@ -64,13 +79,16 @@ class ShopsCard extends StatelessWidget {
               ),
               Container(
                 constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
-                child: CustomText(
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.bold,
-                    text: shopModel.name,
-                    color: black,
-                    letterSpacing: 0,
-                    size: 17),
+                child: Hero(
+                  tag: 'shopName',
+                  child: CustomText(
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.bold,
+                      text: shopModel.name,
+                      color: black,
+                      letterSpacing: 0,
+                      size: 17),
+                ),
               ),
               SizedBox(
                 height: 6,
@@ -87,21 +105,6 @@ class ShopsCard extends StatelessWidget {
                       letterSpacing: 0,
                       overflow: TextOverflow.ellipsis,
                     )),
-                    // Material(
-                    //   color: orange,
-                    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(7))),
-                    //   child: restaurants[index].delivery == true
-                    //       ? Padding(
-                    //           padding: const EdgeInsets.all(2.0),
-                    //           child: CustomText(
-                    //             size: 10,
-                    //             text: 'Free Delivery',
-                    //             color: white,
-                    //             letterSpacing: 0,
-                    //           ),
-                    //         )
-                    //       : SizedBox.shrink(),
-                    // )
                   ],
                 ),
               )

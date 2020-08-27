@@ -3,7 +3,7 @@ import 'package:foodDelivery/models/shops.dart';
 
 class ShopService{
   Firestore _firestore = Firestore.instance;
-  String users = 'users';
+  String users = 'adminUsers';
 
   Future<List<ShopModel>> fetchProducts() async {
     List<ShopModel> shopList = [];
