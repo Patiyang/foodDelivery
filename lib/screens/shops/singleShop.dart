@@ -16,9 +16,7 @@ class _SingleShopState extends State<SingleShop> {
     return Scaffold(
       appBar: AppBar(elevation: 0,
         centerTitle: true,
-        title: Hero(
-          tag: 'shopName',
-          child: Text(singleShop.name)),
+        title: Text(singleShop.name),
       ),
       body: ListView(
         shrinkWrap: true,

@@ -11,8 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,21 +56,19 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 15,
           ),
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width - 16,
-              child: Row(
-                children: <Widget>[
-                  CustomText(
-                    text: 'Discover New Places',
-                    size: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Spacer(),
-                  GestureDetector(child: Icon(Icons.arrow_forward_ios))
-                ],
-              ),
+            width: MediaQuery.of(context).size.width - 16,
+            child: Row(
+              children: <Widget>[
+                CustomText(
+                  text: 'Discover New Places',
+                  size: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                Spacer(),
+                GestureDetector(child: Icon(Icons.arrow_forward_ios))
+              ],
             ),
           ),
           SizedBox(
@@ -82,45 +78,39 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 10,
           ),
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width - 16,
-              child: Row(
-                children: <Widget>[
-                  CustomText(
-                    text: 'Latest Products',
-                    size: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Spacer(),
-                  GestureDetector(child: Icon(Icons.arrow_forward_ios))
-                ],
-              ),
+            width: MediaQuery.of(context).size.width - 16,
+            child: Row(
+              children: <Widget>[
+                CustomText(
+                  text: 'Latest Products',
+                  size: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                Spacer(),
+                GestureDetector(child: Icon(Icons.arrow_forward_ios))
+              ],
             ),
           ),
           RecentProducts(),
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width - 16,
-              child: Row(
-                children: <Widget>[
-                  CustomText(
-                    text: 'Recommended Products',
-                    size: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Spacer(),
-                  GestureDetector(child: Icon(Icons.arrow_forward_ios))
-                ],
-              ),
+            width: MediaQuery.of(context).size.width - 16,
+            child: Row(
+              children: <Widget>[
+                CustomText(
+                  text: 'Recommended Products',
+                  size: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                Spacer(),
+                GestureDetector(child: Icon(Icons.arrow_forward_ios))
+              ],
             ),
           ),
         ],
       ),
     );
   }
-
-  
 }

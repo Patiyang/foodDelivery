@@ -55,8 +55,9 @@ class _RecentProductsState extends State<RecentProducts> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Hero(tag: 'name',
-                                              child: CustomText(
+                      Hero(
+                        tag: '${productProvider.products[index].id}',
+                        child: CustomText(
                           text: productProvider.products[index].name,
                         ),
                       ),

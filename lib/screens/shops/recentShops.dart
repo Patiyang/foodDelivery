@@ -79,16 +79,13 @@ class ShopsCard extends StatelessWidget {
               ),
               Container(
                 constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
-                child: Hero(
-                  tag: 'shopName',
-                  child: CustomText(
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.bold,
-                      text: shopModel.name,
-                      color: black,
-                      letterSpacing: 0,
-                      size: 17),
-                ),
+                child: CustomText(
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.bold,
+                    text: shopModel.name,
+                    color: black,
+                    letterSpacing: 0,
+                    size: 17),
               ),
               SizedBox(
                 height: 6,
