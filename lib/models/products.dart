@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foodDelivery/models/cartProducts.dart';
 
 class ProductsModel {
   static const BRAND = 'brand';
@@ -14,6 +15,7 @@ class ProductsModel {
   static const DELIVERY = 'delivery';
   static const LOCATION = 'location';
   static const SHOPNAME = 'shopName';
+  static const CART = 'cart';
 
   String _brand;
   String _category;
@@ -28,6 +30,9 @@ class ProductsModel {
   String _delivery;
   String _location;
   String _shopName;
+
+  List<CartModel> cartList;
+  int totalCartPrice;
 
   ProductsModel.fromSnapshot(DocumentSnapshot snap) {
     Map data = snap.data;
@@ -44,6 +49,7 @@ class ProductsModel {
     _delivery = data[DELIVERY];
     _location = data[LOCATION];
     _shopName = data[SHOPNAME];
+    cartList = convertToList(data[CART] ?? []);
   }
   String get brand => _brand;
   String get category => _category;
@@ -58,4 +64,13 @@ class ProductsModel {
   String get delivery => _delivery;
   String get location => _location;
   String get shopName => _shopName;
+
+  List<CartModel> convertToList(List cart) {
+    List<CartModel> convertedList = [];
+    for (Map cartItem in cart) {
+      convertedList.add(CartModel.fromMap(cartItem));
+    }
+    print('THE CONVERTED LIST IS ${convertedList.length}');
+    return convertedList;
+  }
 }

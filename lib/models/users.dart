@@ -7,6 +7,8 @@ class User {
   static const String phoneNumber = 'phoneNumber';
   static const String emailAddress = 'emailAddress';
   static const String id = 'id';
+  static const String collection = 'users';
+  static const String adminCollection = 'adminUsers';
 
   User({this.userId});
 }

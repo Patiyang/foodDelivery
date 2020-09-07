@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/users.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
-import 'package:foodDelivery/service/users/userProvider.dart';
+import 'package:foodDelivery/service/users/userService.dart';
 import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
@@ -230,10 +230,8 @@ class _RegisterState extends State<Register> {
       });
       userDataBase.getUserByEmail(emailController.text).then((QuerySnapshot snap) async {
         if (snap.documents.length < 1) {
-          await userDataBase.createUser(
-              firstNameController.text, lastNameController.text, emailController.text, passwordController.text);
           await userProvider
-              .signUp(emailController.text, passwordController.text)
+              .signUp(emailController.text, passwordController.text, firstNameController.text, lastNameController.text)
               .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeNavigation())));
         } else {
           setState(() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/users.dart';
-import 'package:foodDelivery/service/users/userProvider.dart';
+import 'package:foodDelivery/service/users/userService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'loginSignUp/login.dart';

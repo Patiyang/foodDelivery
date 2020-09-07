@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/users.dart';
 
 import 'package:foodDelivery/screens/loginSignUp/register.dart';
-import 'package:foodDelivery/service/users/userProvider.dart';
+import 'package:foodDelivery/service/users/userService.dart';
 import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
@@ -64,11 +64,11 @@ class _LoginState extends State<Login> {
                                 ),
                                 SizedBox(height: 10),
                                 Container(
-                                  height: 100,
+                                  // height: 100,
                                   child: Column(
                                     children: <Widget>[
                                       CustomText(
-                                          text: 'Hello Patrick',
+                                          text: 'Hello',
                                           size: 50,
                                           fontWeight: FontWeight.w400,
                                           color: white,
