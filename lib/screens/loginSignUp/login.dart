@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodDelivery/models/users.dart';
-
+import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/loginSignUp/register.dart';
 import 'package:foodDelivery/service/users/userService.dart';
-import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
-import '../homeNavigation.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -24,24 +20,24 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final _key = GlobalKey<ScaffoldState>();
   UserService userProvider = new UserService();
-  UserDataBase userDataBase = new UserDataBase();
+  UserService userService = new UserService();
   QuerySnapshot snapshot;
   String email = '';
   String password = '';
   bool loading = false;
-  @override
-  void initState() {
-    getUserName();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
+
     return SafeArea(
       child: Scaffold(
-          body: email.length == 0
-              ? Stack(
+          key: _key,
+          body: user.status == Status.Authenticating
+              ? Loading()
+              : Stack(
                   children: <Widget>[
                     Container(
                       child: Image.asset('images/mtumba.jpg',
@@ -83,7 +79,8 @@ class _LoginState extends State<Login> {
                                 ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1),
-                                  child: CustomTextField(radius: 20,
+                                  child: CustomTextField(
+                                    radius: 20,
                                     validator: (v) {
                                       if (v.isEmpty) {
                                         return 'Email Cannot be empty';
@@ -105,7 +102,8 @@ class _LoginState extends State<Login> {
                                 SizedBox(height: 8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
-                                  child: CustomTextField(radius: 20,
+                                  child: CustomTextField(
+                                    radius: 20,
                                     validator: (v) {
                                       if (v.isEmpty) {
                                         return 'Password field cannot be left empty';
@@ -157,7 +155,12 @@ class _LoginState extends State<Login> {
                                             minWidth: 30,
                                             height: 40,
                                             shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                                            onPressed: signIn,
+                                            onPressed: () async {
+                                              if (formKey.currentState.validate()) {
+                                                if (!await user.signIn(emailController.text, passwordController.text))
+                                                  _key.currentState.showSnackBar(SnackBar(content: Text("Sign in failed")));
+                                              }
+                                            },
                                             child: Icon(Icons.arrow_forward),
                                           ),
                                         ),
@@ -189,54 +192,7 @@ class _LoginState extends State<Login> {
                     ),
                     Visibility(visible: loading == true, child: Loading())
                   ],
-                )
-              : HomeNavigation()),
+                )),
     );
-  }
-
-  getUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var emailLength = prefs.getString(User.emailAddress);
-    if (emailLength!=null) {
-      setState(() {
-        email = emailLength;
-      });
-    } else if(emailLength==null) {
-      email = '';
-    }
-
-    print('The email address is ' + email);
-  }
-
-  signIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (formKey.currentState.validate()) {
-      setState(() {
-        loading = true;
-      });
-      await userDataBase.getUserByEmail(emailController.text).then((QuerySnapshot snap) async {
-        snapshot = snap;
-        if (snap.documents.length > 0) {
-          password = snap.documents[0].data[User.password];
-          email = snap.documents[0].data[User.emailAddress];
-          if (email == emailController.text && password == passwordController.text) {
-            prefs.setString(User.emailAddress, email);
-            await userProvider
-                .signIn(emailController.text, passwordController.text)
-                .then((value) => () {
-                      email = value == true ? prefs.getString(User.emailAddress) : '';
-                    })
-                .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeNavigation())));
-          }
-        }
-        if (snap.documents.length < 1 || password != passwordController.text) {
-          setState(() {
-            loading = false;
-            prefs.setString(User.emailAddress, '');
-          });
-          Fluttertoast.showToast(msg: 'Wrong Email Or Password');
-        }
-      });
-    }
   }
 }

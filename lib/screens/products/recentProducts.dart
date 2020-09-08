@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/provider/productsProvider.dart';
 import 'package:foodDelivery/screens/products/singleProduct.dart';
-import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
@@ -14,7 +13,6 @@ class RecentProducts extends StatefulWidget {
 }
 
 class _RecentProductsState extends State<RecentProducts> {
-  UserDataBase database = new UserDataBase();
   String email = '';
 
   @override

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:foodDelivery/provider/appProvider.dart';
 import 'package:foodDelivery/provider/productsProvider.dart';
 import 'package:foodDelivery/provider/shopProvider.dart';
+import 'package:foodDelivery/provider/userProvider.dart';
+import 'package:foodDelivery/screens/homeNavigation.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
 import 'package:foodDelivery/styling.dart';
+import 'package:foodDelivery/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -12,7 +16,8 @@ void main() {
       providers: [
         ChangeNotifierProvider.value(value: ProductsProvider.initialize()),
         ChangeNotifierProvider.value(value: ShopProvider.initialize()),
-        // ChangeNotifierProvider.value(value: AppProvider()),
+        ChangeNotifierProvider.value(value: UserProvider.initialize()),
+        ChangeNotifierProvider.value(value: AppProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -25,8 +30,25 @@ void main() {
           primarySwatch: Colors.orange,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Login(),
+        home: ScreensController(),
       ),
     ),
   );
+}
+
+class ScreensController extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
+    switch(user.status){
+      case Status.Uninitialized:
+        return Loading();
+      case Status.Unauthenticated:
+      case Status.Authenticating:
+        return Login();
+      case Status.Authenticated:
+        return HomeNavigation();
+      default: return Login();
+    }
+  }
 }

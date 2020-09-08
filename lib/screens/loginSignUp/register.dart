@@ -1,18 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodDelivery/models/users.dart';
+import 'package:foodDelivery/provider/userProvider.dart';
+import 'package:foodDelivery/screens/homeNavigation.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
 import 'package:foodDelivery/service/users/userService.dart';
-import 'package:foodDelivery/service/users/usersDatabase.dart';
 import 'package:foodDelivery/styling.dart';
+import 'package:foodDelivery/widgets/changeScreen.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../homeNavigation.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -28,19 +26,19 @@ class _RegisterState extends State<Register> {
   final TextEditingController passwordController = new TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  UserService userProvider = new UserService();
-  UserDataBase userDataBase = new UserDataBase();
+  final _key = GlobalKey<ScaffoldState>();
+
+  UserService userService = new UserService();
+
   QuerySnapshot snapshot;
   Firestore firestore = Firestore.instance;
-  String userName;
-  String userEmail;
-  String phoneNumber;
-  String userId;
   bool loading = false;
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
     return SafeArea(
       child: Scaffold(
+        key: _key,
           body: Stack(
         children: <Widget>[
           Container(
@@ -180,13 +178,21 @@ class _RegisterState extends State<Register> {
                                     gradient: LinearGradient(colors: [white, orange]),
                                   ),
                                   child: MaterialButton(
-                                    splashColor: orange,
-                                    minWidth: 30,
-                                    height: 40,
-                                    shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                                    onPressed: signUp,
-                                    child: Icon(Icons.arrow_forward),
-                                  ),
+                                      child: Icon(Icons.arrow_forward),
+                                      splashColor: orange,
+                                      minWidth: 30,
+                                      height: 40,
+                                      shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                      onPressed: () async {
+                                        if (formKey.currentState.validate()) {
+                                          if (!await user.signUp(firstNameController.text, lastNameController.text,
+                                              emailController.text, passwordController.text)) {
+                                            _key.currentState.showSnackBar(SnackBar(content: Text("Sign up failed")));
+                                            return;
+                                          }
+                                          changeScreenReplacement(context, HomeNavigation());
+                                        }
+                                      }),
                                 ),
                               )
                             ],
@@ -219,28 +225,5 @@ class _RegisterState extends State<Register> {
         ],
       )),
     );
-  }
-
-  signUp() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (formKey.currentState.validate()) {
-      prefs.setString(User.emailAddress, emailController.text);
-      setState(() {
-        loading = true;
-      });
-      userDataBase.getUserByEmail(emailController.text).then((QuerySnapshot snap) async {
-        if (snap.documents.length < 1) {
-          await userProvider
-              .signUp(emailController.text, passwordController.text, firstNameController.text, lastNameController.text)
-              .then((value) => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeNavigation())));
-        } else {
-          setState(() {
-            formKey.currentState.reset();
-            loading = false;
-          });
-          Fluttertoast.showToast(msg: 'Email already in use');
-        }
-      });
-    }
   }
 }

@@ -2,8 +2,7 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/products.dart';
-import 'package:foodDelivery/provider/productsProvider.dart';
-import 'package:foodDelivery/service/productsService.dart';
+import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +32,7 @@ class _SingleProductState extends State<SingleProduct> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductsProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     var singleProduct = widget.productsModel;
     var carousel = Carousel(
@@ -191,7 +190,7 @@ class _SingleProductState extends State<SingleProduct> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                         onPressed: () {
                           if (formKey.currentState.validate()) {
-                            productProvider.addToCart(productItem: singleProduct, size: currentSize);
+                            userProvider.addToCart(product: singleProduct, size: currentSize, quantity: int.parse(quantityController.text));
                             final snackBar = SnackBar(content: Text('Product added to cart', textAlign: TextAlign.center,));
                             scaffoldKey.currentState.showSnackBar(snackBar);
                           } else {
@@ -220,11 +219,12 @@ class _SingleProductState extends State<SingleProduct> {
                   ],
                 ),
               ),
+              SizedBox(height: 15),
               RichText(
                   text: TextSpan(children: [
-                TextSpan(text: 'Vendor: ', style: TextStyle(color: black, fontSize: 16)),
+                TextSpan(text: 'Vendor: ', style: TextStyle(color: black)),
                 TextSpan(
-                    text: '${singleProduct.shopName}', style: TextStyle(color: black, fontSize: 19, fontWeight: FontWeight.bold))
+                    text: '${singleProduct.shopName}', style: TextStyle(color: black, fontSize: 15, fontWeight: FontWeight.bold))
               ])),
               Divider(),
               Container(

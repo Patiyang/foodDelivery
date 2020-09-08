@@ -20,16 +20,16 @@ class ProductsService {
   }
 
   void addToCart({String userId, CartModel cartItem}) {
-   _firestore.collection(User.collection).document(userId).updateData({
+   _firestore.collection(UserModel.collection).document(userId).updateData({
       "cart": FieldValue.arrayUnion([cartItem.toMap()])
     });
   }
 
   Future<List<ProductsModel>> fetchCartProducts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String id = prefs.getString(User.emailAddress);
+    String id = prefs.getString(UserModel.EMAIL);
     List<ProductsModel> productList = [];
-    await _firestore.collection(User.collection).document(id).collection(ProductsModel.CART).getDocuments().then((snap) {
+    await _firestore.collection(UserModel.collection).document(id).collection(ProductsModel.CART).getDocuments().then((snap) {
       for (DocumentSnapshot product in snap.documents) {
         productList.add(ProductsModel.fromSnapshot(product));
       }

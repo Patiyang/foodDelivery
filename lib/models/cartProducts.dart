@@ -7,6 +7,7 @@ class CartModel {
   static const SIZE = 'size';
   static const DELIVERY = 'delivery';
   static const SHOPNAME = 'shopName';
+  static const QUANTITY = 'quantity';
 
   String _id;
   String _productId;
@@ -16,6 +17,7 @@ class CartModel {
   String _sizes;
   String _delivery;
   String _shopName;
+  int _quantity;
 
   String get id => _id;
   String get images => _image;
@@ -25,6 +27,7 @@ class CartModel {
   String get delivery => _delivery;
   String get shopName => _shopName;
   String get productId => _productId;
+  int get quantity => _quantity;
 
   CartModel.fromMap(Map data) {
     _id = data[ID];
@@ -35,6 +38,7 @@ class CartModel {
     _sizes = data[SIZE];
     _delivery = data[DELIVERY];
     _shopName = data[SHOPNAME];
+    _quantity = data[QUANTITY];
   }
 
   Map toMap() => {
@@ -45,6 +49,7 @@ class CartModel {
         PRICE: _price,
         SIZE: _sizes,
         DELIVERY: _delivery,
-        SHOPNAME: _shopName
+        SHOPNAME: _shopName,
+        QUANTITY: _quantity
       };
 }
