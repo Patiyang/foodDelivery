@@ -74,10 +74,17 @@ class UserProvider with ChangeNotifier {
     } else {
       _user = user;
       _userModel = await _userServices.getUserById(user.uid);
+      print('${userModel.cart.length}');
       _status = Status.Authenticated;
     }
     notifyListeners();
   }
+
+  Future<void> reloadUserModel() async {
+    _userModel = await _userServices.getUserById(user.uid);
+    notifyListeners();
+  }
+
 
   Future<bool> addToCart({ProductsModel product, String size, int quantity}) async {
     try {
@@ -91,8 +98,8 @@ class UserProvider with ChangeNotifier {
         "image": product.images[0],
         "productId": product.id,
         "price": product.price,
-        "delivery":product.delivery,
-        'shopName':product.shopName,
+        "delivery": product.delivery,
+        'shopName': product.shopName,
         "size": size,
         "quantity": quantity
       };
@@ -109,13 +116,11 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> removeFromCart({CartModel cartItem}) async {
-    print("THE PRODUC IS: ${cartItem.toString()}");
-
     try {
       _userServices.removeFromCart(userId: _user.uid, cartProduct: cartItem);
       return true;
     } catch (e) {
-      print("THE ERROR ${e.toString()}");
+      print("error${e.toString()}");
       return false;
     }
   }

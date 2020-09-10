@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
+import 'package:foodDelivery/screens/homeNavigation.dart';
 import 'package:foodDelivery/screens/loginSignUp/register.dart';
 import 'package:foodDelivery/service/users/userService.dart';
 import 'package:foodDelivery/styling.dart';
+import 'package:foodDelivery/widgets/changeScreen.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
-
 
 class Login extends StatefulWidget {
   @override
@@ -31,7 +32,11 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
-
+    print(user.status);
+    print(user.status);
+    print(user.status);
+    print(user.status);
+    print(user.status);
     return SafeArea(
       child: Scaffold(
           key: _key,
@@ -157,8 +162,10 @@ class _LoginState extends State<Login> {
                                             shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                                             onPressed: () async {
                                               if (formKey.currentState.validate()) {
-                                                if (!await user.signIn(emailController.text, passwordController.text))
+                                                if (!await user.signIn(emailController.text, passwordController.text)) {
                                                   _key.currentState.showSnackBar(SnackBar(content: Text("Sign in failed")));
+                                                }
+                                                // changeScreenReplacement(context, HomeNavigation());
                                               }
                                             },
                                             child: Icon(Icons.arrow_forward),

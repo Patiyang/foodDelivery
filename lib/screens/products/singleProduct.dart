@@ -2,8 +2,10 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/products.dart';
+import 'package:foodDelivery/provider/appProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/widgets/customText.dart';
+import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +36,7 @@ class _SingleProductState extends State<SingleProduct> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
 
+    final appProvider = Provider.of<AppProvider>(context);
     var singleProduct = widget.productsModel;
     var carousel = Carousel(
       dotBgColor: Colors.transparent,
@@ -188,16 +191,32 @@ class _SingleProductState extends State<SingleProduct> {
                         color: orange[200],
                         icon: Icon(Icons.add_shopping_cart, color: black, size: 15),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                        onPressed: () {
+                        onPressed: () async {
+                          appProvider.changeIsLoading();
                           if (formKey.currentState.validate()) {
-                            userProvider.addToCart(product: singleProduct, size: currentSize, quantity: int.parse(quantityController.text));
-                            final snackBar = SnackBar(content: Text('Product added to cart', textAlign: TextAlign.center,));
-                            scaffoldKey.currentState.showSnackBar(snackBar);
-                          } else {
-                            Fluttertoast.showToast(msg: 'failed to add product');
+                            bool productAdded = await userProvider.addToCart(
+                                product: singleProduct, size: currentSize, quantity: int.parse(quantityController.text));
+                            if (productAdded) {
+                              final snackBar = SnackBar(
+                                  content: Text(
+                                'Product added to cart',
+                                textAlign: TextAlign.center,
+                              ));
+                              scaffoldKey.currentState.showSnackBar(snackBar);
+                              userProvider.reloadUserModel();
+                              appProvider.changeIsLoading();
+                            } else {
+                              final snackBar = SnackBar(
+                                  content: Text(
+                                'Product not added to cart',
+                                textAlign: TextAlign.center,
+                              ));
+                              scaffoldKey.currentState.showSnackBar(snackBar);
+                              appProvider.changeIsLoading();
+                            }
                           }
                         },
-                        label: CustomText(text: 'add to cart'),
+                        label: appProvider.isLoading ? Loading() : CustomText(text: 'add to cart'),
                       ),
                     ),
                     Divider(

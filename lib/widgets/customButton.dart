@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:foodDelivery/styling.dart';
 import 'customText.dart';
 
-
 ///like all the widgets in ths folder, these widgets are meant to make deisgn easier
 ///rather than repeading the same widget over and over again, I utilize these instead
 class CustomButton extends StatefulWidget {
@@ -11,8 +10,10 @@ class CustomButton extends StatefulWidget {
   final String text;
   final Color color;
   final double size;
+  final ShapeBorder shape;
 
-  const CustomButton({Key key, @required this.callback, @required this.icon, @required this.text, this.color, this.size})
+  const CustomButton(
+      {Key key, @required this.callback, @required this.icon, @required this.text, this.color, this.size, this.shape})
       : super(key: key);
 
   @override
@@ -22,7 +23,8 @@ class CustomButton extends StatefulWidget {
 class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return MaterialButton(
+      shape: widget.shape,
       splashColor: orange,
       onPressed: widget.callback,
       child: Column(
@@ -36,7 +38,7 @@ class _CustomButtonState extends State<CustomButton> {
             text: widget.text,
             color: widget.color,
             fontWeight: FontWeight.normal,
-            size: widget.size??13,
+            size: widget.size ?? 13,
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:foodDelivery/provider/shopProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/homeNavigation.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
+import 'package:foodDelivery/screens/loginSignUp/onboarding.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,8 @@ void main() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(appBarTheme: AppBarTheme(color: orange[200]),
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(color: orange[200]),
           scaffoldBackgroundColor: white,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: grey[700]),
           cursorColor: black,
@@ -40,15 +42,17 @@ class ScreensController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
-    switch(user.status){
+    switch (user.status) {
       case Status.Uninitialized:
         return Loading();
       case Status.Unauthenticated:
+        return OnBoarding();
       case Status.Authenticating:
         return Login();
       case Status.Authenticated:
         return HomeNavigation();
-      default: return Login();
+      default:
+        return Login();
     }
   }
 }
