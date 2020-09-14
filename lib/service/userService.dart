@@ -35,13 +35,13 @@ class UserService {
 
   addToCart({String userId, CartModel cartProduct}) {
     _firestore.collection(UserModel.collection).document(userId).updateData({
-      'cart': FieldValue.arrayUnion([cartProduct.toMap()])
+      UserModel.CART: FieldValue.arrayUnion([cartProduct.toMap()])
     });
   }
 
   removeFromCart({String userId, CartModel cartProduct}) {
     _firestore.collection(UserModel.collection).document(userId).updateData({
-      'cart': FieldValue.arrayRemove([cartProduct.toMap()])
+      UserModel.CART: FieldValue.arrayRemove([cartProduct.toMap()])
     });
   }
 

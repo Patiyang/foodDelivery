@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/cartProducts.dart';
 import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/models/users.dart';
-import 'package:foodDelivery/service/users/userService.dart';
+import 'package:foodDelivery/service/userService.dart';
 import 'package:uuid/uuid.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
@@ -74,45 +74,44 @@ class UserProvider with ChangeNotifier {
     } else {
       _user = user;
       _userModel = await _userServices.getUserById(user.uid);
-      print('${userModel.cart.length}');
+      print('the number of items in the cart is: ${userModel.cart.length}');
       _status = Status.Authenticated;
     }
     notifyListeners();
   }
 
-  Future<void> reloadUserModel() async {
+  Future<void> updateUserModel() async {
     _userModel = await _userServices.getUserById(user.uid);
     notifyListeners();
   }
 
-
-  Future<bool> addToCart({ProductsModel product, String size, int quantity}) async {
-    try {
+  Future<bool> addItemToCart({ProductsModel product, String size, int quantity}) async {
+    // try {
       var uuid = Uuid();
       String cartItemId = uuid.v4();
       List<CartModel> cartItems = _userModel.cart;
-
+      double totalCartItemPrice = quantity * product.price;
       Map cartItem = {
-        "id": cartItemId,
-        "name": product.name,
-        "image": product.images[0],
-        "productId": product.id,
-        "price": product.price,
-        "delivery": product.delivery,
-        'shopName': product.shopName,
-        "size": size,
-        "quantity": quantity
+        CartModel.ID: cartItemId,
+        CartModel.NAME: product.name,
+        CartModel.IMAGE: product.images[0],
+        CartModel.PRODUCT_ID: product.id,
+        CartModel.PRICE: totalCartItemPrice,
+        CartModel.DELIVERY: product.delivery,
+        CartModel.SHOPNAME: product.shopName,
+        CartModel.TOTAL: totalCartItemPrice + product.delivery,
+        CartModel.SIZE: size,
+        CartModel.QUANTITY: quantity
       };
-
+      print(cartItems.length);
       CartModel item = CartModel.fromMap(cartItem);
-      print("CART ITEMS ARE: ${cartItems.length}");
       _userServices.addToCart(userId: _user.uid, cartProduct: item);
 
       return true;
-    } catch (e) {
-      print("THE ERROR ${e.toString()}");
-      return false;
-    }
+    // } catch (e) {
+    //   print("THE ERROR ${e.toString()}");
+    //   return false;
+    // }
   }
 
   Future<bool> removeFromCart({CartModel cartItem}) async {

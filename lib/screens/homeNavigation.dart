@@ -14,7 +14,7 @@ class _HomeNavigationState extends State<HomeNavigation> {
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final tabs = [HomePage(), Orders(), Favorites(), Profile()];
+    final tabs = [HomePage(), ManageOrders(), Favorites(), Profile()];
     return SafeArea(
       child: Scaffold(
         body: tabs[currentIndex],
@@ -32,7 +32,7 @@ class _HomeNavigationState extends State<HomeNavigation> {
             currentIndex: currentIndex,
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-              BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), title: Text('My Orders')),
+              BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), title: Text('Manage Orders')),
               BottomNavigationBarItem(icon: Icon(Icons.bookmark), title: Text('Favorites')),
               BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Profile')),
             ],

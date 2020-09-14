@@ -18,6 +18,7 @@ class UserModel {
   String _id;
   String _stripeId;
   double _priceSum = 0;
+  double totalPerItem = 0;
 
 //  getters
   String get firstName => _firstName;
@@ -54,7 +55,7 @@ class UserModel {
       return 0;
     }
     for (Map cartItem in cart) {
-      _priceSum += cartItem["price"];
+      _priceSum += cartItem[CartModel.TOTAL];
     }
 
     double total = _priceSum;

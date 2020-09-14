@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
 import 'package:foodDelivery/screens/loginSignUp/register.dart';
 import 'package:foodDelivery/styling.dart';
-import 'package:foodDelivery/widgets/changeScreen.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/favoritesButton.dart';
-import 'package:provider/provider.dart';
 
 class OnBoarding extends StatefulWidget {
   @override
@@ -15,6 +12,7 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   bool seeLogin = false;
+  bool seeRegistration = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,11 +24,10 @@ class _OnBoardingState extends State<OnBoarding> {
               Image.asset('images/loggo.png', height: 90),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: Material(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(9))),
                     color: grey[100],
-                    // height: MediaQuery.of(context).size.height - 227,
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(9)),
                       child: PageView(
@@ -56,15 +53,24 @@ class _OnBoardingState extends State<OnBoarding> {
                 color: orange,
               ),
               FavoriteButton(
-                  callback: () => changeScreenReplacement(context, Register()),
-                  icon: Icons.person_add,
-                  text: 'Sign Up',
-                  color: orange)
+                callback: () {
+                  setState(() {
+                    seeRegistration = true;
+                  });
+                },
+                icon: Icons.person_add,
+                text: 'Sign Up',
+                color: orange,
+              )
             ],
           ),
           Visibility(
             visible: seeLogin == true,
             child: Login(),
+          ),
+          Visibility(
+            child: Register(),
+            visible: seeRegistration == true,
           )
         ],
       )),
@@ -79,18 +85,27 @@ class OnboardChild extends StatelessWidget {
   const OnboardChild({Key key, @required this.imagePath, @required this.text}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(scrollDirection: Axis.vertical,
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Image.asset(
-            imagePath,
-            colorBlendMode: BlendMode.colorBurn,
-            fit: BoxFit.cover,
-            height: 380,
-          ),
-          CustomText(text: text, size: 20,fontWeight: FontWeight.bold,letterSpacing: .3,)
-        ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              imagePath,
+              colorBlendMode: BlendMode.colorBurn,
+              fit: BoxFit.cover,
+              height: 380,
+            ),
+            CustomText(
+              text: text,
+              size: 20,
+              fontWeight: FontWeight.bold,
+              letterSpacing: .3,
+            )
+          ],
+        ),
       ),
     );
   }

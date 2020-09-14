@@ -1,15 +1,16 @@
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/provider/appProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
+import 'package:foodDelivery/widgets/changeScreen.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
 
 import '../../styling.dart';
+import '../cartScreen.dart';
 
 class SingleProduct extends StatefulWidget {
   final ProductsModel productsModel;
@@ -71,7 +72,7 @@ class _SingleProductState extends State<SingleProduct> {
         ),
         actions: [
           IconButton(icon: Icon(Icons.map), onPressed: () {}),
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: null)
+          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () => changeScreenReplacement(context, CartScreen()))
         ],
       ),
       body: Form(
@@ -141,8 +142,7 @@ class _SingleProductState extends State<SingleProduct> {
                             color: black,
                           )),
                       TextSpan(
-                          text: singleProduct.delivery == 'Free' ? '${singleProduct.delivery}' : 'Ksh ${singleProduct.delivery}',
-                          style: TextStyle(color: orange, fontWeight: FontWeight.bold))
+                          text: 'Ksh ${singleProduct.delivery}', style: TextStyle(color: orange, fontWeight: FontWeight.bold))
                     ])),
                   ],
                 ),
@@ -192,9 +192,9 @@ class _SingleProductState extends State<SingleProduct> {
                         icon: Icon(Icons.add_shopping_cart, color: black, size: 15),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                         onPressed: () async {
-                          appProvider.changeIsLoading();
+                          appProvider.changeLoadingState();
                           if (formKey.currentState.validate()) {
-                            bool productAdded = await userProvider.addToCart(
+                            bool productAdded = await userProvider.addItemToCart(
                                 product: singleProduct, size: currentSize, quantity: int.parse(quantityController.text));
                             if (productAdded) {
                               final snackBar = SnackBar(
@@ -203,8 +203,8 @@ class _SingleProductState extends State<SingleProduct> {
                                 textAlign: TextAlign.center,
                               ));
                               scaffoldKey.currentState.showSnackBar(snackBar);
-                              userProvider.reloadUserModel();
-                              appProvider.changeIsLoading();
+                              userProvider.updateUserModel();
+                              appProvider.changeLoadingState();
                             } else {
                               final snackBar = SnackBar(
                                   content: Text(
@@ -212,7 +212,7 @@ class _SingleProductState extends State<SingleProduct> {
                                 textAlign: TextAlign.center,
                               ));
                               scaffoldKey.currentState.showSnackBar(snackBar);
-                              appProvider.changeIsLoading();
+                              appProvider.changeLoadingState();
                             }
                           }
                         },
