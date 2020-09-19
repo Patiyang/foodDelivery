@@ -15,6 +15,7 @@ class ProductsModel {
   static const LOCATION = 'location';
   static const SHOPNAME = 'shopName';
   static const CART = 'cart';
+  static const SHOPID = 'shopId';
   static const TIME = 'createdAt';
 
   String _brand;
@@ -31,6 +32,7 @@ class ProductsModel {
   String _location;
   String _shopName;
   String _time;
+  String _shopId;
 
   ProductsModel.fromSnapshot(DocumentSnapshot snap) {
     Map data = snap.data;
@@ -48,6 +50,7 @@ class ProductsModel {
     _location = data[LOCATION];
     _shopName = data[SHOPNAME];
     _time = data[TIME];
+    _shopId = data[SHOPID];
   }
   String get brand => _brand;
   String get category => _category;
@@ -63,4 +66,5 @@ class ProductsModel {
   String get location => _location;
   String get shopName => _shopName;
   String get time => _time;
+  String get shopId => _shopId;
 }

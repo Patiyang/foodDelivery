@@ -5,7 +5,7 @@ class ShopService{
   Firestore _firestore = Firestore.instance;
   String users = 'adminUsers';
 
-  Future<List<ShopModel>> fetchProducts() async {
+  Future<List<ShopModel>> loadShops() async {
     List<ShopModel> shopList = [];
     await _firestore.collection(users).getDocuments().then((snap) {
       print(snap.runtimeType);

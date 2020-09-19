@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/screens/home.dart';
 import 'package:foodDelivery/screens/favorites/favorites.dart';
-import 'package:foodDelivery/screens/orders.dart';
+import 'package:foodDelivery/screens/manageOrders/orders.dart';
 import '../styling.dart';
 import 'profile.dart';
 

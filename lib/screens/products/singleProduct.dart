@@ -10,7 +10,7 @@ import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
 
 import '../../styling.dart';
-import '../cartScreen.dart';
+import '../manageOrders/cartScreen.dart';
 
 class SingleProduct extends StatefulWidget {
   final ProductsModel productsModel;

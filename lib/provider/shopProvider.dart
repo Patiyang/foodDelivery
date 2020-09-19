@@ -12,7 +12,7 @@ class ShopProvider with ChangeNotifier {
   }
 
   loadShops() async {
-    shops = await _shopService.fetchProducts();
+    shops = await _shopService.loadShops();
     notifyListeners();
   }
 }

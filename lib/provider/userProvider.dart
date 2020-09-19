@@ -86,7 +86,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> addItemToCart({ProductsModel product, String size, int quantity}) async {
-    // try {
+    try {
       var uuid = Uuid();
       String cartItemId = uuid.v4();
       List<CartModel> cartItems = _userModel.cart;
@@ -108,10 +108,10 @@ class UserProvider with ChangeNotifier {
       _userServices.addToCart(userId: _user.uid, cartProduct: item);
 
       return true;
-    // } catch (e) {
-    //   print("THE ERROR ${e.toString()}");
-    //   return false;
-    // }
+    } catch (e) {
+      print("THE ERROR ${e.toString()}");
+      return false;
+    }
   }
 
   Future<bool> removeFromCart({CartModel cartItem}) async {
