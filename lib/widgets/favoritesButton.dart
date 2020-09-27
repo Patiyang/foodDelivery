@@ -16,7 +16,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
+      // width: 150,
       child: FlatButton.icon(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
           onPressed: widget.callback,

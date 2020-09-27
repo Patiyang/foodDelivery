@@ -28,7 +28,7 @@ class ProductsModel {
   int _quantity;
   List _sizes;
   String _status;
-  int _delivery;
+  double _delivery;
   String _location;
   String _shopName;
   String _time;
@@ -62,7 +62,7 @@ class ProductsModel {
   int get quantity => _quantity;
   List get sizes => _sizes;
   String get status => _status;
-  int get delivery => _delivery;
+  double get delivery => _delivery;
   String get location => _location;
   String get shopName => _shopName;
   String get time => _time;

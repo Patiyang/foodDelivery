@@ -18,7 +18,7 @@ class _RecentProductsState extends State<RecentProducts> {
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductsProvider>(context);
-    print(productProvider.products.length);
+    print('the length is ${productProvider.products.length}');
     return Container(
       height: 250,
       width: MediaQuery.of(context).size.width,
@@ -53,7 +53,7 @@ class _RecentProductsState extends State<RecentProducts> {
                               color: grey[400],
                               offset: Offset(2, 2),
                               blurRadius: 3,
-                              spreadRadius: 1,
+                              spreadRadius: 1
                             )
                           ],
                         ),

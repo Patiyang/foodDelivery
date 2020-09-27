@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/manageOrders/cartScreen.dart';
 import 'package:foodDelivery/screens/manageOrders/ordersScreen.dart';
 import 'package:foodDelivery/widgets/customText.dart';
@@ -14,13 +15,15 @@ class ManageOrders extends StatefulWidget {
 }
 
 class _ManageOrdersState extends State<ManageOrders> {
+  UserProvider userProvider = new UserProvider.initialize();
   Pages selectedpage = Pages.cartItems;
   Color active = orange;
   Color inactive = grey[200];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 30,
+      appBar: AppBar(
+        toolbarHeight: 30,
         iconTheme: IconThemeData(color: black),
         // leading: IconButton(icon: Icon(Icons.clear), onPressed: ()=>Navigator.pop(context)),
         automaticallyImplyLeading: false,
@@ -60,7 +63,9 @@ class _ManageOrdersState extends State<ManageOrders> {
                     color: selectedpage == Pages.orders ? active : inactive,
                     icon: Icons.monetization_on,
                     text: 'Orders',
-                    callback: () {
+                    callback: () async {
+                      await userProvider.getOrders();
+                      print(userProvider.orders.length);
                       setState(() {
                         selectedpage = Pages.orders;
                       });

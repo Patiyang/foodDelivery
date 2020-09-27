@@ -41,14 +41,19 @@ class CartItemRich extends StatelessWidget {
   final double lightFontSize;
   final double boldFontSize;
   final double letterSpacing;
-  const CartItemRich({Key key, this.lightFont, this.boldFont, this.lightFontSize, this.boldFontSize, this.letterSpacing}) : super(key: key);
+  final Color color;
+  const CartItemRich({Key key, this.lightFont, this.boldFont, this.lightFontSize, this.boldFontSize, this.letterSpacing, this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(children: [
-        TextSpan(text: lightFont, style: TextStyle(color: grey, fontSize: lightFontSize ?? 13, fontWeight: FontWeight.bold)),
-        TextSpan(text: boldFont, style: TextStyle(color: black, fontSize: boldFontSize ?? 15, fontWeight: FontWeight.bold, letterSpacing: letterSpacing)),
+        TextSpan(text: lightFont, style: TextStyle(color:color?? grey, fontSize: lightFontSize ?? 13, fontWeight: FontWeight.bold,)),
+        TextSpan(
+            text: boldFont,
+            style:
+                TextStyle(color: black, fontSize: boldFontSize ?? 15, fontWeight: FontWeight.bold, letterSpacing: letterSpacing)),
       ]),
     );
   }

@@ -6,6 +6,9 @@ import '../styling.dart';
 import 'profile.dart';
 
 class HomeNavigation extends StatefulWidget {
+  final int cartOrderScreen;
+
+  const HomeNavigation({Key key, this.cartOrderScreen}) : super(key: key);
   @override
   _HomeNavigationState createState() => _HomeNavigationState();
 }

@@ -16,7 +16,7 @@ class CartModel {
   String _name;
   double _price;
   String _sizes;
-  int _delivery;
+  double _delivery;
   String _shopName;
   int _quantity;
   double _total;
@@ -26,7 +26,7 @@ class CartModel {
   String get name => _name;
   double get price => _price;
   String get sizes => _sizes;
-  int get delivery => _delivery;
+  double get delivery => _delivery;
   String get shopName => _shopName;
   String get productId => _productId;
   int get quantity => _quantity;

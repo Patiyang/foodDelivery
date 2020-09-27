@@ -37,23 +37,6 @@ class _CartScreenState extends State<CartScreen> {
     final userModelItem = userProvider.userModel;
     return Scaffold(
       key: _scaffoldKey,
-      // appBar: AppBar(
-      //   iconTheme: IconThemeData(color: black),
-      //   backgroundColor: orange[200],
-      //   elevation: 0.0,
-      //   centerTitle: true,
-      //   title: CustomText(
-      //     text: "Shopping Cart",
-      //     size: 20,
-      //     fontWeight: FontWeight.bold,
-      //     letterSpacing: .3,
-      //   ),
-      //   leading: IconButton(
-      //       icon: Icon(Icons.close),
-      //       onPressed: () {
-      //         Navigator.pop(context);
-      //       }),
-      // ),
       backgroundColor: white,
       body: appProvider.isLoading
           ? Loading()
@@ -79,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
                       });
                     },
                     child: Container(
-                      height: 140,
+                      height: 150,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: white,
@@ -131,36 +114,38 @@ class _CartScreenState extends State<CartScreen> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CartItemRich(
-                                        lightFont: 'Total: ',
-                                        boldFont: '${cart.total}',
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          appProvider.changeLoadingState();
-                                          bool success = await userProvider.removeFromCart(cartItem: userModelItem.cart[index]);
-                                          if (success) {
-                                            userProvider.updateUserModel();
-                                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                                content: Text(
-                                              "Removed from Cart!",
-                                              textAlign: TextAlign.center,
-                                            )));
-                                            appProvider.changeLoadingState();
-                                            return;
-                                          } else {
-                                            appProvider.changeLoadingState();
-                                          }
-                                        },
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: red,
+                                  Expanded(
+                                                                        child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CartItemRich(
+                                          lightFont: 'Total: ',
+                                          boldFont: '${cart.total}',
                                         ),
-                                      )
-                                    ],
+                                        GestureDetector(
+                                          onTap: () async {
+                                            appProvider.changeLoadingState();
+                                            bool success = await userProvider.removeFromCart(cartItem: userModelItem.cart[index]);
+                                            if (success) {
+                                              userProvider.updateUserModel();
+                                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                                  content: Text(
+                                                "Removed from Cart!",
+                                                textAlign: TextAlign.center,
+                                              )));
+                                              appProvider.changeLoadingState();
+                                              return;
+                                            } else {
+                                              appProvider.changeLoadingState();
+                                            }
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: red,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),

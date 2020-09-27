@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/cartProducts.dart';
+import 'package:foodDelivery/models/orders.dart';
 import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/models/users.dart';
+import 'package:foodDelivery/service/orderServices.dart';
 import 'package:foodDelivery/service/userService.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,7 +15,8 @@ class UserProvider with ChangeNotifier {
   FirebaseUser _user;
   Status _status = Status.Uninitialized;
   UserService _userServices = UserService();
-  // OrderServices _orderServices = OrderServices();
+  OrderServices _orderServices = OrderServices();
+  List<OrderModel> orders = [];
 
   UserModel _userModel;
 
@@ -25,7 +28,6 @@ class UserProvider with ChangeNotifier {
   FirebaseUser get user => _user;
 
   // public variables
-  // List<OrderModel> orders = [];
 
   UserProvider.initialize() : _auth = FirebaseAuth.instance {
     _auth.onAuthStateChanged.listen(_onStateChanged);
@@ -122,5 +124,18 @@ class UserProvider with ChangeNotifier {
       print("error${e.toString()}");
       return false;
     }
+  }
+
+  getOrders() async {
+    String userId  = (await FirebaseAuth.instance.currentUser()).uid;
+    orders = await _orderServices.getUserOrders(userId: userId);
+    print('the length of orders sknknsd ${orders.length}');
+    print(userId);
+    notifyListeners();
+  }
+
+  Future<void> reloadUserModel() async {
+    _userModel = await _userServices.getUserById(user.uid);
+    notifyListeners();
   }
 }

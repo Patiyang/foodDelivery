@@ -5,7 +5,8 @@ import 'package:foodDelivery/models/orders.dart';
 class OrderServices {
   Firestore _firestore = Firestore.instance;
   String collection = 'orders';
-  createOrder({String userId, String id, String description, String status, double totalPrice, List<CartModel> cart, String shopName}) {
+  createOrder(
+      {String userId, String id, String description, String status, double totalPrice, List<CartModel> cart, String shopName}) {
     List<Map> convertedCart = [];
 
     for (CartModel item in cart) {
@@ -28,6 +29,7 @@ class OrderServices {
         List<OrderModel> orders = [];
         for (DocumentSnapshot order in result.documents) {
           orders.add(OrderModel.fromSnapshot(order));
+          // print('the order length is ${orders.length}');
         }
         return orders;
       });

@@ -14,7 +14,7 @@ class OrderModel {
   String _userId;
   String _status;
   int _createdAt;
-  int _total;
+  double _total;
 
 //  getters
   String get id => _id;
@@ -25,7 +25,7 @@ class OrderModel {
 
   String get status => _status;
 
-  int get total => _total;
+  double get total => _total;
 
   int get createdAt => _createdAt;
 

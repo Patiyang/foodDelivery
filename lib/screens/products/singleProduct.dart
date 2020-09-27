@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/provider/appProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
+import 'package:foodDelivery/screens/home.dart';
+import 'package:foodDelivery/screens/homeNavigation.dart';
+import 'package:foodDelivery/screens/manageOrders/orders.dart';
 import 'package:foodDelivery/widgets/changeScreen.dart';
 import 'package:foodDelivery/widgets/customText.dart';
+import 'package:foodDelivery/widgets/favoritesButton.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +76,7 @@ class _SingleProductState extends State<SingleProduct> {
         ),
         actions: [
           IconButton(icon: Icon(Icons.map), onPressed: () {}),
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () => changeScreenReplacement(context, CartScreen()))
+          IconButton(icon: Icon(Icons.shopping_cart), onPressed: () => changeScreen(context, ManageOrders()))
         ],
       ),
       body: Form(
@@ -196,14 +200,55 @@ class _SingleProductState extends State<SingleProduct> {
                           if (formKey.currentState.validate()) {
                             bool productAdded = await userProvider.addItemToCart(
                                 product: singleProduct, size: currentSize, quantity: int.parse(quantityController.text));
-                            if (productAdded) {
+                            if (productAdded == true) {
                               final snackBar = SnackBar(
                                   content: Text(
                                 'Product added to cart',
                                 textAlign: TextAlign.center,
                               ));
                               scaffoldKey.currentState.showSnackBar(snackBar);
-                              userProvider.updateUserModel();
+                              userProvider.updateUserModel().then((value) => showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                      child: Container(
+                                        height: 200,
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            // crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              CustomText(
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: .3,
+                                                text: 'What would you like to do?',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              FavoriteButton(
+                                                icon: Icons.check,
+                                                callback: () async {
+                                                  changeScreen(context, widget);
+                                                },
+                                                text: 'Proceed to Cart',
+                                                color: orange[500],
+                                              ),
+                                              FavoriteButton(
+                                                color: orange[500],
+                                                callback: () {
+                                                  changeScreenReplacement(context, HomeNavigation());
+                                                },
+                                                text: "Continue Shopping",
+                                                icon: Icons.cancel,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }));
                               appProvider.changeLoadingState();
                             } else {
                               final snackBar = SnackBar(
@@ -216,7 +261,11 @@ class _SingleProductState extends State<SingleProduct> {
                             }
                           }
                         },
-                        label: appProvider.isLoading ? Loading() : CustomText(text: 'add to cart'),
+                        label: appProvider.isLoading
+                            ? Loading(
+                                color: Colors.transparent,
+                              )
+                            : CustomText(text: 'add to cart'),
                       ),
                     ),
                     Divider(
