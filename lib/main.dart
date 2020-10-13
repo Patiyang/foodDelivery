@@ -46,7 +46,7 @@ class ScreensController extends StatelessWidget {
       case Status.Uninitialized:
         return Loading();
       case Status.Unauthenticated:
-        return OnBoarding();
+        // return OnBoarding();
       case Status.Authenticating:
         return Login();
       case Status.Authenticated:

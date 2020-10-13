@@ -17,7 +17,8 @@ class UserService {
     }
   }
 
-  createUser(String firstName, String lastName, String emailAddress, String password) async {
+  createUser(
+      String firstName, String lastName, String emailAddress, String password, String phoneNumber, String profilePicture) async {
     FirebaseUser user = await _auth.currentUser();
     String uid = user.uid;
     try {
@@ -26,7 +27,9 @@ class UserService {
         UserModel.LASTNAME: lastName,
         UserModel.PASSWORD: password,
         UserModel.EMAIL: emailAddress,
-        UserModel.ID: user.uid
+        UserModel.ID: user.uid,
+        UserModel.PHONE: phoneNumber,
+        UserModel.PROFILE: profilePicture,
       });
     } catch (e) {
       print(e.toString());
@@ -53,9 +56,32 @@ class UserService {
     }
   }
 
-  Future<UserModel> getUserById(String id)=> _firestore.collection(UserModel.collection).document(id).get().then((doc){
-    return UserModel.fromSnapshot(doc);
-  });
+  Future<UserModel> getUserById(String id) => _firestore.collection(UserModel.collection).document(id).get().then((doc) {
+        return UserModel.fromSnapshot(doc);
+      });
+  Future<void> updateUser(String firstName, String lastName, String phoneNumber, String emailAddress, String userId) async {
+    try {
+      return _firestore.collection('users').document(userId).updateData({
+        UserModel.FIRSTNAME: firstName,
+        UserModel.LASTNAME: lastName,
+        UserModel.PHONE: phoneNumber,
+        UserModel.EMAIL: emailAddress
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> updatePassword(String password, String userId) async {
+    try {
+      return _firestore.document(userId).updateData({
+        UserModel.ID: userId,
+        UserModel.PASSWORD: password,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future signOut() async {
     try {

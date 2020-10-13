@@ -53,10 +53,6 @@ class _LoginState extends State<Login> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                CircleAvatar(
-                                  radius: 70,
-                                ),
-                                SizedBox(height: 10),
                                 Container(
                                   // height: 100,
                                   child: Column(
@@ -67,9 +63,7 @@ class _LoginState extends State<Login> {
                                           fontWeight: FontWeight.w400,
                                           color: white,
                                           textAlign: TextAlign.left),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
+                                      SizedBox(height: 10),
                                       CustomText(
                                           text: 'Sign Into Your Account', size: 24, fontWeight: FontWeight.w300, color: white)
                                     ],

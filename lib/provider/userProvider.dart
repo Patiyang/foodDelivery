@@ -47,12 +47,12 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> signUp(String firstName, String lastName, String email, String password) async {
+  Future<bool> signUp(String firstName, String lastName, String email, String password, String phoneNumber, String profilePicture) async {
     try {
       _status = Status.Authenticating;
       notifyListeners();
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((user) {
-        _userServices.createUser(firstName, lastName, email, password);
+        _userServices.createUser(firstName, lastName, email, password, phoneNumber, profilePicture);
       });
       return true;
     } catch (e) {

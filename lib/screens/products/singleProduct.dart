@@ -263,7 +263,7 @@ class _SingleProductState extends State<SingleProduct> {
                         },
                         label: appProvider.isLoading
                             ? Loading(
-                                color: Colors.transparent,
+                                // text: 'Please wait...',
                               )
                             : CustomText(text: 'add to cart'),
                       ),

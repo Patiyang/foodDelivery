@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/screens/products/recentProducts.dart';
+import 'package:foodDelivery/screens/search.dart';
 import 'package:foodDelivery/screens/shops/recentShops.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 
@@ -32,6 +33,10 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextFormField(
+                            onTap: () => showSearch(
+                              context: context,
+                              delegate: SearchScreen(),
+                            ),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Search Products or Shops',

@@ -33,6 +33,12 @@ dependencies:
   carousel_pro: ^1.0.0
   flutter_spinkit: ^4.1.2+1
   transparent_image: ^1.0.0
+  image_picker: ^0.6.7+4
+  google_maps_flutter: ^0.5.33
+  geolocator: ^6.0.0+4
+  geocoding: ^1.0.4+1
+  flutter_polyline_points: ^0.2.4
+
 
 
   # The following adds the Cupertino Icons font to your application.

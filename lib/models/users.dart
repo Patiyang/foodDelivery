@@ -9,6 +9,8 @@ class UserModel {
   static const EMAIL = "emailAddress";
   static const STRIPE_ID = "stripeId";
   static const CART = "cart";
+  static const PHONE = 'phoneNumber';
+  static const PROFILE = 'profilePic';
   static const collection = 'users';
 
   String _firstName;
@@ -17,6 +19,8 @@ class UserModel {
   String _email;
   String _id;
   String _stripeId;
+  String _phoneNumber;
+  String _profilePicture;
   double _priceSum = 0;
   double totalPerItem = 0;
 
@@ -27,6 +31,8 @@ class UserModel {
   String get id => _id;
   String get stripeId => _stripeId;
   String get password => _password;
+  String get phoneNumber => _phoneNumber;
+  String get profilePicture => _profilePicture;
   // public variables
   List<CartModel> cart;
   double totalCartPrice;
@@ -38,6 +44,8 @@ class UserModel {
     _id = snapshot.data[ID];
     _password = snapshot.data[PASSWORD];
     _stripeId = snapshot.data[STRIPE_ID] ?? "";
+    _phoneNumber = snapshot.data[PHONE];
+    _profilePicture = snapshot.data[PROFILE];
     cart = _convertCartItems(snapshot.data[CART] ?? []);
     totalCartPrice = snapshot.data[CART] == null ? 0 : getTotalPrice(cart: snapshot.data[CART]);
   }

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
@@ -8,7 +11,11 @@ import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/customText.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import '../../widgets/changeScreen.dart';
+import '../homeNavigation.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -22,6 +29,9 @@ class _RegisterState extends State<Register> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController phoneNumberController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
+  StorageReference storage = FirebaseStorage.instance.ref();
+  File imageToUpload;
 
   final formKey = GlobalKey<FormState>();
   final _key = GlobalKey<ScaffoldState>();
@@ -57,13 +67,14 @@ class _RegisterState extends State<Register> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                CircleAvatar(
-                                  radius: 50,
-                                  child: Icon(
-                                    Icons.image,
-                                    size: 30,
-                                  ),
-                                ),
+                                GestureDetector(
+                                    child: CircleAvatar(
+                                      // backgroundColor: profileImage != null ? Colors.transparent : orange[100],
+                                      radius: 50,
+                                      child: userImage(),
+                                    ),
+                                    // ignore: deprecated_member_use
+                                    onTap: () => selectProfileImage(ImagePicker.pickImage(source: ImageSource.gallery))),
                                 SizedBox(height: 10),
                                 Container(
                                   padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
@@ -130,6 +141,27 @@ class _RegisterState extends State<Register> {
                                     radius: 20,
                                     validator: (v) {
                                       if (v.isEmpty) {
+                                        return 'Phone Number cannot be left empty';
+                                      }
+                                      if (v.length < 6) {
+                                        return 'the password length must be greather than 6';
+                                      }
+                                      return null;
+                                    },
+                                    containerColor: white.withOpacity(.8),
+                                    iconOne: Icons.lock,
+                                    hint: 'PhoneNumber',
+                                    controller: phoneNumberController,
+                                    // obscure: true,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
+                                  child: CustomTextField(
+                                    radius: 20,
+                                    validator: (v) {
+                                      if (v.isEmpty) {
                                         return 'Password field cannot be left empty';
                                       }
                                       if (v.length < 6) {
@@ -186,13 +218,39 @@ class _RegisterState extends State<Register> {
                                                 height: 40,
                                                 shape: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                                                 onPressed: () async {
-                                                  if (formKey.currentState.validate()) {
-                                                    if (!await user.signUp(firstNameController.text, lastNameController.text,
-                                                        emailController.text, passwordController.text)) {
-                                                      _key.currentState.showSnackBar(SnackBar(content: Text("Sign up failed")));
-                                                      return;
+                                                  if (imageToUpload == null) {
+                                                    _key.currentState.showSnackBar(SnackBar(
+                                                        content: Text(
+                                                      'The image cannot be empty',
+                                                      style: TextStyle(color: Colors.red),
+                                                      textAlign: TextAlign.center,
+                                                    )));
+                                                  } else {
+                                                    if (formKey.currentState.validate()) {
+                                                      String profilePicture;
+                                                      String imageName =
+                                                          '${emailController.text}${DateTime.now().millisecondsSinceEpoch}.jpg';
+                                                      StorageTaskSnapshot snap = await storage
+                                                          .child('profileImages/$imageName')
+                                                          .putFile(imageToUpload)
+                                                          .onComplete;
+                                                      if (snap.error == null) {
+                                                        profilePicture = await snap.ref.getDownloadURL();
+                                                        if (!await user.signUp(
+                                                            firstNameController.text,
+                                                            lastNameController.text,
+                                                            emailController.text,
+                                                            passwordController.text,
+                                                            phoneNumberController.text,
+                                                            profilePicture)) {
+                                                          _key.currentState
+                                                              .showSnackBar(SnackBar(content: Text("Sign up failed")));
+                                                          return;
+                                                        } else {
+                                                          changeScreenReplacement(context, HomeNavigation());
+                                                        }
+                                                      }
                                                     }
-                                                    // changeScreenReplacement(context, HomeNavigation());
                                                   }
                                                 }),
                                           ),
@@ -227,5 +285,18 @@ class _RegisterState extends State<Register> {
                   ],
                 )),
     );
+  }
+
+  Widget userImage() {
+    return ClipOval(
+      child: imageToUpload == null ? Icon(Icons.image) : Image.file(imageToUpload, fit: BoxFit.cover, height: 100, width: 100),
+    );
+  }
+
+  selectProfileImage(Future<File> pickImage) async {
+    File selectedProfileImage = await pickImage;
+    setState(() {
+      imageToUpload = selectedProfileImage;
+    });
   }
 }
