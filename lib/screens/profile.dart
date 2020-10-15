@@ -149,7 +149,7 @@ class _UserDetailsState extends State<UserDetails> {
                           print(_userName.text);
                           if (_formKey.currentState.validate()) {
                             await userService
-                                .updateUser(user.user.uid, _firstName.text, _lastName.text, _phoneNumber.text, user.user.uid)
+                                .updateUser(_firstName.text, _lastName.text, _phoneNumber.text, _emailAddress.text, user.user.uid)
                                 .then((_) => _key.currentState.showSnackBar(
                                       SnackBar(
                                           content: Text(
@@ -274,15 +274,19 @@ class _UserDetailsState extends State<UserDetails> {
                           onPressed: () async {
                             print(_oldPassword);
                             if (_passwordKey.currentState.validate()) {
-                              await userService
-                                  .updatePassword(_newPassword.text, user.user.uid)
-                                  .then((_) => _key.currentState.showSnackBar(
-                                        SnackBar(
-                                            content: CustomText(
-                                          text: 'Password Updated',
-                                          textAlign: TextAlign.center,
-                                        )),
-                                      ));
+                              try {
+                                await userService
+                                    .updatePassword(_newPassword.text, user.user.uid)
+                                    .then((_) => _key.currentState.showSnackBar(
+                                          SnackBar(
+                                              content: CustomText(
+                                            text: 'Password Updated',
+                                            textAlign: TextAlign.center,
+                                          )),
+                                        ));
+                              } catch (e) {
+                                print('the error' + e.toString());
+                              }
                             }
                           },
                         ),

@@ -38,6 +38,7 @@ class _HomeNavigationState extends State<HomeNavigation> {
     final tabs = [Location(), HomePage(), UserDetails()];
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(elevation: 0,centerTitle: true, title: CustomText(text: 'CHANGE HII TITLE MZAE', size: 17)),
         body: tabs[currentIndex],
         bottomNavigationBar: SizedBox(
           height: 45,
@@ -121,8 +122,8 @@ class _HomeNavigationState extends State<HomeNavigation> {
                 icon: Icons.shopping_cart,
                 text: 'My Orders',
                 callback: () {
-                  changeScreen(context, OrderItems());
-                  Navigator.pop(context);
+                  changeScreen(context, ManageOrders());
+                  // Navigator.pop(context);
                 }),
             ListTiles(
                 icon: Icons.favorite,

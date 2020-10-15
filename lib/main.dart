@@ -24,6 +24,7 @@ void main() {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
+          fontFamily: 'Helvetica',
           appBarTheme: AppBarTheme(color: orange[200]),
           scaffoldBackgroundColor: white,
           bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: grey[700]),
@@ -46,7 +47,6 @@ class ScreensController extends StatelessWidget {
       case Status.Uninitialized:
         return Loading();
       case Status.Unauthenticated:
-        // return OnBoarding();
       case Status.Authenticating:
         return Login();
       case Status.Authenticated:

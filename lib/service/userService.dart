@@ -74,7 +74,7 @@ class UserService {
 
   Future<void> updatePassword(String password, String userId) async {
     try {
-      return _firestore.document(userId).updateData({
+      return _firestore.collection('users').document(userId).updateData({
         UserModel.ID: userId,
         UserModel.PASSWORD: password,
       });
