@@ -8,7 +8,7 @@ class ShopModel {
   static const LOCATION = 'location';
   static const PROFILEiMAGE = 'profileImage';
   static const LATITUDE = 'latitude';
-  static const LONGITUDE = 'latitude';
+  static const LONGITUDE = 'longitude';
 
   String _description;
   String _id;
@@ -27,7 +27,7 @@ class ShopModel {
     _name = data[NAME];
     _location = data[LOCATION];
     _profileImage = data[PROFILEiMAGE];
-    _latitude = data[PROFILEiMAGE];
+    _latitude = data[LATITUDE];
     _longitude = data[LONGITUDE];
   }
   String get description => _description;

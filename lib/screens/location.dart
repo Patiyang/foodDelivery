@@ -109,9 +109,10 @@ class _LocationState extends State<Location> {
                 ),
                 child: ShopsCard(
                   callback: () {
-                    print(shopProvider.shops[index].latitude);
-                    // _getPolyline(
-                    //     double.parse(shopProvider.shops[index].latitude), double.parse(shopProvider.shops[index].longitude));
+                    // print('latitude is'+shopProvider.shops[index].latitude);
+                    // print(shopProvider.shops[index].latitude);
+                    _getPolyline(
+                        double.parse(shopProvider.shops[index].latitude), double.parse(shopProvider.shops[index].longitude));
                   },
                   shopModel: shopProvider.shops[index],
                 ),
