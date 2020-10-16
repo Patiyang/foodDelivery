@@ -42,7 +42,7 @@ class _LocationState extends State<Location> {
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
   double _originLatitude = -2.4219983, _originLongitude = 38.084;
-  var shopProvider;
+  ShopProvider shopProvider;
   @override
   void initState() {
     _getUserLocation();
@@ -68,7 +68,7 @@ class _LocationState extends State<Location> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          // mapsScreen(),
+          mapsScreen(),
           placesList(),
         ],
       ),
@@ -108,6 +108,11 @@ class _LocationState extends State<Location> {
                   ],
                 ),
                 child: ShopsCard(
+                  callback: () {
+                    print(shopProvider.shops[index].latitude);
+                    // _getPolyline(
+                    //     double.parse(shopProvider.shops[index].latitude), double.parse(shopProvider.shops[index].longitude));
+                  },
                   shopModel: shopProvider.shops[index],
                 ),
               ),
@@ -194,15 +199,19 @@ class _LocationState extends State<Location> {
 
 class ShopsCard extends StatelessWidget {
   final ShopModel shopModel;
+  final double longitude;
+  final double latitude;
+  final VoidCallback callback;
 
-  const ShopsCard({Key key, this.shopModel}) : super(key: key);
+  const ShopsCard({Key key, this.shopModel, this.longitude, this.latitude, this.callback}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(9)),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -226,7 +235,7 @@ class ShopsCard extends StatelessWidget {
                       placeholder: kTransparentImage,
                       image: shopModel.backgroundImage,
                       height: 150,
-                      // width: 200,
+                      width: 250,
                       fit: BoxFit.cover,
                     ),
                   ],
@@ -236,42 +245,49 @@ class ShopsCard extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
-                      child: CustomText(
-                          overflow: TextOverflow.ellipsis,
-                          fontWeight: FontWeight.bold,
-                          text: shopModel.name,
-                          color: black,
-                          letterSpacing: 0,
-                          size: 17),
-                    ),
-                    SizedBox(
-                      height: 6,
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.location_on, size: 17),
-                          CustomText(text: shopModel.location, size: 14, letterSpacing: 0, overflow: TextOverflow.ellipsis),
-                        ],
+            Container(
+              width: 250,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
+                        child: CustomText(
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            text: shopModel.name,
+                            color: black,
+                            letterSpacing: 0,
+                            size: 17),
                       ),
-                    )
-                  ],
-                ),
-                Container(
-                  width: 60,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)), shape: BoxShape.rectangle, color: orange),
-                  child: Icon(Icons.directions, color: white),
-                ),
-              ],
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.location_on, size: 17),
+                            CustomText(text: shopModel.location, size: 14, letterSpacing: 0, overflow: TextOverflow.ellipsis),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: callback,
+                    child: Container(
+                      width: 60,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)), shape: BoxShape.rectangle, color: orange),
+                      child: Icon(Icons.directions, color: white),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -7,6 +7,8 @@ class ShopModel {
   static const NAME = 'shopName';
   static const LOCATION = 'location';
   static const PROFILEiMAGE = 'profileImage';
+  static const LATITUDE = 'latitude';
+  static const LONGITUDE = 'latitude';
 
   String _description;
   String _id;
@@ -14,6 +16,8 @@ class ShopModel {
   String _name;
   String _location;
   String _profileImage;
+  String _latitude;
+  String _longitude;
 
   ShopModel.fromSnapshot(DocumentSnapshot snap) {
     Map data = snap.data;
@@ -23,6 +27,8 @@ class ShopModel {
     _name = data[NAME];
     _location = data[LOCATION];
     _profileImage = data[PROFILEiMAGE];
+    _latitude = data[PROFILEiMAGE];
+    _longitude = data[LONGITUDE];
   }
   String get description => _description;
   String get id => _id;
@@ -30,4 +36,6 @@ class ShopModel {
   String get name => _name;
   String get location => _location;
   String get profileImage => _profileImage;
+  String get latitude => _latitude;
+  String get longitude => _longitude;
 }
