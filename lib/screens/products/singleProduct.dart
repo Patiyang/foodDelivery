@@ -12,6 +12,7 @@ import 'package:foodDelivery/widgets/favoritesButton.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:foodDelivery/widgets/textField.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../styling.dart';
 import '../manageOrders/cartScreen.dart';
@@ -230,7 +231,7 @@ class _SingleProductState extends State<SingleProduct> {
                                               FavoriteButton(
                                                 icon: Icons.check,
                                                 callback: () async {
-                                                  changeScreen(context, widget);
+                                                  changeScreenReplacement(context, ManageOrders());
                                                 },
                                                 text: 'Proceed to Cart',
                                                 color: orange[500],
@@ -264,12 +265,9 @@ class _SingleProductState extends State<SingleProduct> {
                         label: appProvider.isLoading
                             ? Loading(
                                 // text: 'Please wait...',
-                              )
+                                )
                             : CustomText(text: 'add to cart'),
                       ),
-                    ),
-                    Divider(
-                      color: black,
                     ),
                     Container(
                       child: FlatButton.icon(
@@ -279,7 +277,7 @@ class _SingleProductState extends State<SingleProduct> {
                         onPressed: () {},
                         label: CustomText(
                           maxLines: 2,
-                          text: 'Remove From Favorites',
+                          text: 'Add to Favorites',
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -287,13 +285,43 @@ class _SingleProductState extends State<SingleProduct> {
                   ],
                 ),
               ),
+
               SizedBox(height: 15),
+              Divider(),
               RichText(
                   text: TextSpan(children: [
                 TextSpan(text: 'Vendor: ', style: TextStyle(color: black)),
                 TextSpan(
                     text: '${singleProduct.shopName}', style: TextStyle(color: black, fontSize: 15, fontWeight: FontWeight.bold))
               ])),
+              SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 15),
+                  FlatButton.icon(
+                      color: orange[200],
+                      icon: Icon(Icons.phone, color: black, size: 15),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                      onPressed: () {
+                        triggerPhone(singleProduct.phone);
+                      },
+                      label: CustomText(
+                        text: 'Call',
+                      )),
+                  SizedBox(width: 15),
+                  FlatButton.icon(
+                      color: orange[200],
+                      icon: Icon(Icons.message, color: black, size: 15),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                      onPressed: () {
+                        triggerMessage(singleProduct.phone);
+                      },
+                      label: CustomText(
+                        text: 'Text',
+                      ))
+                ],
+              ),
               Divider(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 1.0),
@@ -342,10 +370,21 @@ class _SingleProductState extends State<SingleProduct> {
     });
   }
 
-  // addtoCart() {
-  //   if (formKey.currentState.validate()) {
-  //   } else {
-  //     print('shit');
-  //   }
-  // }
+  triggerPhone(String phoneNumber) async {
+    var url = "tel:$phoneNumber";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Cannot launch $url';
+    }
+  }
+
+  triggerMessage(String message) async {
+    var url = "sms:$message";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Cannot launch $url';
+    }
+  }
 }
