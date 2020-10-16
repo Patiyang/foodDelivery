@@ -39,19 +39,7 @@ class _UserDetailsState extends State<UserDetails> {
     String users = 'users';
     return Scaffold(
       key: _key,
-      appBar: AppBar(
-        title: Text('Profile Management'),
-        backgroundColor: orange,
-        centerTitle: true,
-        actions: <Widget>[
-          // IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          IconButton(
-              icon: Icon(Icons.shopping_cart),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
-              })
-        ],
-      ),
+      
       body: StreamBuilder(
         stream: _firestore.collection(users).where(UserModel.ID, isEqualTo: user.user.uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {

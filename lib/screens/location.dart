@@ -68,7 +68,7 @@ class _LocationState extends State<Location> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          mapsScreen(),
+          // mapsScreen(),
           placesList(),
         ],
       ),
@@ -202,83 +202,75 @@ class ShopsCard extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(9)),
-        child: Row(
-          children: [
-            Column(
-              children: <Widget>[
-                ClipRRect(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: white,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: white,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 1,
-                          color: orange,
-                          offset: Offset(1, 1),
-                        ),
-                      ],
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 1,
+                      color: orange,
+                      offset: Offset(1, 1),
                     ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Loading(),
-                        FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: shopModel.backgroundImage,
-                          height: 150,
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
-                          child: CustomText(
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: FontWeight.bold,
-                              text: shopModel.name,
-                              color: black,
-                              letterSpacing: 0,
-                              size: 17),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Center(
-                          child: Container(
-                            constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.location_on, size: 17),
-                                CustomText(text: shopModel.location, size: 14, letterSpacing: 0, overflow: TextOverflow.ellipsis),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),Container(
-                  width: 60,
-                  height: 30,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), shape: BoxShape.rectangle, color: orange),
-                  child: Icon(Icons.directions, color: white),
-                ),
                   ],
                 ),
-                
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Loading(),
+                    FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: shopModel.backgroundImage,
+                      height: 150,
+                      // width: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(maxWidth: 170, maxHeight: 30),
+                      child: CustomText(
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.bold,
+                          text: shopModel.name,
+                          color: black,
+                          letterSpacing: 0,
+                          size: 17),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.location_on, size: 17),
+                          CustomText(text: shopModel.location, size: 14, letterSpacing: 0, overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                  width: 60,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)), shape: BoxShape.rectangle, color: orange),
+                  child: Icon(Icons.directions, color: white),
+                ),
               ],
             ),
           ],

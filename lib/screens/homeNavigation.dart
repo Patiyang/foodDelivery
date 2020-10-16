@@ -25,7 +25,15 @@ class HomeNavigation extends StatefulWidget {
 }
 
 class _HomeNavigationState extends State<HomeNavigation> {
-  int currentIndex = 1;
+  int currentIndex;
+  String appbarText = '';
+  @override
+  void initState() {
+    appbarText = 'Home';
+    currentIndex = 1;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context);
@@ -38,7 +46,7 @@ class _HomeNavigationState extends State<HomeNavigation> {
     final tabs = [Location(), HomePage(), UserDetails()];
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(elevation: 0,centerTitle: true, title: CustomText(text: 'CHANGE HII TITLE MZAE', size: 17)),
+        appBar: AppBar(elevation: 0, centerTitle: true, title: CustomText(text: appbarText, size: 17)),
         body: tabs[currentIndex],
         bottomNavigationBar: SizedBox(
           height: 45,
@@ -63,6 +71,21 @@ class _HomeNavigationState extends State<HomeNavigation> {
               setState(() {
                 currentIndex = index;
               });
+              if (currentIndex == 0) {
+                setState(() {
+                  appbarText = 'Location';
+                });
+              }
+              if (currentIndex == 1) {
+                setState(() {
+                  appbarText = 'Home';
+                });
+              }
+              if (currentIndex == 2) {
+                setState(() {
+                  appbarText = 'Profile';
+                });
+              }
             },
           ),
         ),
@@ -76,13 +99,13 @@ class _HomeNavigationState extends State<HomeNavigation> {
                   for (int i = 0; i < snapshot.data.documents.length; i++) {
                     DocumentSnapshot _snap = snapshot.data.documents[i];
                     firstName = _snap[UserModel.FIRSTNAME];
-                    lastName= _snap[UserModel.LASTNAME];
+                    lastName = _snap[UserModel.LASTNAME];
                     email = _snap[UserModel.EMAIL];
                     profilePicture = _snap[UserModel.PROFILE];
                   }
                   return GestureDetector(
                     child: UserAccountsDrawerHeader(
-                        accountName: CustomText(text: firstName +''+ lastName, color: white, size: 16),
+                        accountName: CustomText(text: firstName + '' + lastName, color: white, size: 16),
                         accountEmail: CustomText(text: email, color: white, size: 16),
                         currentAccountPicture: CircleAvatar(
                           backgroundImage: NetworkImage(profilePicture),
