@@ -35,7 +35,7 @@ class _LocationState extends State<Location> {
   double cameraZoom = 7;
   bool loading = false;
   // final ApiManagement _apiManagement = new ApiManagement();
-  List<Marker> restaurantMarkers = [];
+  List<Marker> shopMarkers = [];
   Map<PolylineId, Polyline> polylines = {};
   Completer<GoogleMapController> mapsController = Completer();
   GoogleMapController mapcontroller;
@@ -48,11 +48,11 @@ class _LocationState extends State<Location> {
     _getUserLocation();
     super.initState();
   }
-
+//FETCHING THE CURRENT CUSTOMER LOCATION
   Future<CameraPosition> _getUserLocation() async {
     var position = await GeolocatorPlatform.instance.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    currentPostion = LatLng(-2.4213, 38.084);
-    // currentPostion = LatLng(position.latitude, position.longitude);
+    // currentPostion = LatLng(-2.4213, 38.084);
+    currentPostion = LatLng(position.latitude, position.longitude);
     if (widget.latitude != null && widget.longitude != null) {
       _getPolyline(widget.latitude, widget.longitude);
     }
@@ -83,6 +83,20 @@ class _LocationState extends State<Location> {
         scrollDirection: Axis.horizontal,
         itemCount: shopProvider.shops.length,
         itemBuilder: (BuildContext context, int index) {
+          var shopsList = shopProvider.shops;
+          //ADDING THE MARKERS AND STYLING THEM
+          for (int i = 0; i < shopsList.length; i++) {
+            shopMarkers.add(
+              Marker(
+                markerId: MarkerId(shopsList[i].name),
+                position: LatLng(double.parse(shopsList[i].latitude), double.parse(shopsList[i].longitude)),
+                infoWindow: InfoWindow(title: shopsList[i].name),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueOrange,
+                ),
+              ),
+            );
+          }
           return GestureDetector(
             onTap: () => Navigator.push(
                 context,
@@ -138,7 +152,7 @@ class _LocationState extends State<Location> {
               mapToolbarEnabled: false,
               compassEnabled: true,
               onMapCreated: _onMapCreated,
-              markers: Set.from(restaurantMarkers),
+              markers: Set.from(shopMarkers),
               myLocationEnabled: true,
               mapType: MapType.normal,
               initialCameraPosition: cameraPosition,
@@ -169,11 +183,17 @@ class _LocationState extends State<Location> {
       lastPosition = position.target;
     });
   }
-
+//SPECIFYNG THE POLYLINE ROUTES 
   _addPolyLine(String polyId) {
     PolylineId id = PolylineId(polyId);
     Polyline polyline = Polyline(
-        polylineId: id, color: orange, points: polylineCoordinates, width: 3, endCap: Cap.roundCap, jointType: JointType.round);
+      polylineId: id,
+      color: orange,
+      points: polylineCoordinates,
+      width: 3,
+      endCap: Cap.roundCap,
+      jointType: JointType.round,
+    );
     polylines[id] = polyline;
     setState(() {});
   }
