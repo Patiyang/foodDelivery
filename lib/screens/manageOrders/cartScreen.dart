@@ -115,7 +115,7 @@ class _CartScreenState extends State<CartScreen> {
                                     height: 10,
                                   ),
                                   Expanded(
-                                                                        child: Row(
+                                    child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         CartItemRich(
@@ -201,7 +201,6 @@ class _CartScreenState extends State<CartScreen> {
                             return Dialog(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                               child: Container(
-                             
                                 height: 200,
                                 width: MediaQuery.of(context).size.width,
                                 child: Padding(
@@ -224,7 +223,7 @@ class _CartScreenState extends State<CartScreen> {
                                           _orderServices.createOrder(
                                               userId: userProvider.user.uid,
                                               id: id,
-                                              description: 'Paid Ksh${userModelItem.totalCartPrice}',
+                                              description: 'Paid Ksh ${userModelItem.totalCartPrice}',
                                               status: "ONGOING",
                                               totalPrice: userProvider.userModel.totalCartPrice,
                                               cart: userProvider.userModel.cart);

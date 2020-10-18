@@ -37,7 +37,7 @@ class _OrderItemsState extends State<OrderItems> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CartItemRich(lightFont: 'ID: ', boldFont: _order.id, boldFontSize: 17),
-                    CartItemRich(lightFont: 'Placed By: ', boldFont: _order.description),
+                    CartItemRich(lightFont: 'Details: ', boldFont: _order.description),
                     SizedBox(height: 10),
                     CartItemRich(
                         lightFont: 'Placed On: ',

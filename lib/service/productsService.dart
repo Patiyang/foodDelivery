@@ -16,6 +16,25 @@ class ProductsService {
     return productList;
   }
 
+  Future<List<ProductsModel>> fetchSearchProducts(dynamic searchQuery) async {
+    List<ProductsModel> searchList = [];
+    await _firestore.collection(products).where('name', isEqualTo: searchQuery).getDocuments().then((snap) {
+      for (DocumentSnapshot product in snap.documents) {
+        searchList.add(ProductsModel.fromSnapshot(product));
+      }
+    });
+    print('the length of the search list is'+searchList.length.toString());
+    return searchList;
+  }
+
+  Future<void> updateProduct(String productId, String quantity) async {
+    try {
+      return _firestore.collection('product').document(productId).updateData({ProductsModel.QUANTITY: quantity});
+    } catch (e) {
+      print('THE ERROR WHILE UPDATING IS ' + e.toString());
+    }
+  }
+
   Future<List<ProductsModel>> selectedCartItem(String productId) async {
     List<ProductsModel> cartProductList = [];
     await _firestore.collection(products).where(ProductsModel.ID, isEqualTo: productId).getDocuments().then((snap) {
@@ -31,7 +50,7 @@ class ProductsService {
     List<ProductsModel> productList = [];
     await _firestore.collection(products).orderBy('createdAt').getDocuments().then((snap) {
       snap.documents.forEach((snapshot) {
-        productList.insert(0,ProductsModel.fromSnapshot(snapshot));
+        productList.insert(0, ProductsModel.fromSnapshot(snapshot));
       });
     });
     return productList;

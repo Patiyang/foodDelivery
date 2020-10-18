@@ -51,8 +51,8 @@ class _LocationState extends State<Location> {
 //FETCHING THE CURRENT CUSTOMER LOCATION
   Future<CameraPosition> _getUserLocation() async {
     var position = await GeolocatorPlatform.instance.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    // currentPostion = LatLng(-2.4213, 38.084);
-    currentPostion = LatLng(position.latitude, position.longitude);
+    currentPostion = LatLng(-2.4213, 38.084);
+    // currentPostion = LatLng(position.latitude, position.longitude);
     if (widget.latitude != null && widget.longitude != null) {
       _getPolyline(widget.latitude, widget.longitude);
     }

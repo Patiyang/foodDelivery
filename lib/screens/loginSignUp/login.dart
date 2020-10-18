@@ -59,13 +59,13 @@ class _LoginState extends State<Login> {
                                     children: <Widget>[
                                       CustomText(
                                           text: 'Hello',
-                                          size: 50,
+                                          size: 25,
                                           fontWeight: FontWeight.w400,
                                           color: white,
                                           textAlign: TextAlign.left),
                                       SizedBox(height: 10),
                                       CustomText(
-                                          text: 'Sign Into Your Account', size: 24, fontWeight: FontWeight.w300, color: white)
+                                          text: 'Sign Into Your Account', size: 18, fontWeight: FontWeight.w300, color: white),SizedBox(height: 10),
                                     ],
                                   ),
                                 ),
