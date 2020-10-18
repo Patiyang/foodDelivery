@@ -210,7 +210,6 @@ class _CartScreenState extends State<CartScreen> {
                           textAlign: TextAlign.center,
                           color: white,
                         )));
-
                         return;
                       }
 
