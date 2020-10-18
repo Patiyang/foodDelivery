@@ -18,7 +18,7 @@ class SearchScreen extends SearchDelegate {
       textTheme: TextTheme(headline6: TextStyle(color: Colors.white, fontSize: 17)),
       accentIconTheme: IconThemeData(color: grey),
       inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white)),
-      primaryColor: grey,
+      primaryColor: grey[100],
       hintColor: Colors.yellow,
       primaryIconTheme: IconThemeData(color: Colors.white),
     );
@@ -53,32 +53,39 @@ class SearchScreen extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     ProductsService productsService = new ProductsService();
-
     return StreamBuilder(
       stream: productsService.fetchSearchProducts(query).asStream(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          print('snapshot has data');
           List<ProductsModel> products = snapshot.data;
           return ListView.builder(
             itemCount: products.length,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                leading: Image.network(
-                  products[index].images[0],
-                  height: 50,
-                  width: 50,
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: ListTile(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(3))),
+                  tileColor: grey[100],
+                  // contentPadding: EdgeInsets.all(14),
+                  leading: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                      child: Image.network(products[index].images[0], height: 50, width: 50, fit: BoxFit.cover)),
+                  title: CustomText(
+                    text: products[index].name,
+                    size: 15,
+                  ),
+                  subtitle: CustomText(
+                    text: products[index].description,
+                    color: grey[600],
+                  ),
+                  trailing: CustomFlatButton(
+                    radius: 9,
+                    width: 60,
+                    height: 30,
+                    text: 'View',
+                    callback: () => changeScreenReplacement(context, SingleProduct(productsModel: products[index])),
+                  ),
                 ),
-                title: CustomText(text: products[index].name, maxLines: 1, overflow: TextOverflow.fade),
-                subtitle: CustomText(text: products[index].description, maxLines: 2, overflow: TextOverflow.fade),
-                trailing: CustomButton(
-                    callback: () => changeScreenReplacement(
-                        context,
-                        SingleProduct(
-                          productsModel: products[index],
-                        )),
-                    icon: Icons.arrow_right,
-                    text: 'View'),
               );
             },
           );

@@ -16,9 +16,11 @@ class ProductsService {
     return productList;
   }
 
-  Future<List<ProductsModel>> fetchSearchProducts(dynamic searchQuery) async {
+  
+
+  Future<List<ProductsModel>> fetchSearchProducts(String searchQuery) async {
     List<ProductsModel> searchList = [];
-    await _firestore.collection(products).where('name', isEqualTo: searchQuery).getDocuments().then((snap) {
+    await _firestore.collection(products).orderBy('name').startAt([searchQuery]).endAt([searchQuery + '\uf8ff']).getDocuments().then((snap) {
       for (DocumentSnapshot product in snap.documents) {
         searchList.add(ProductsModel.fromSnapshot(product));
       }
