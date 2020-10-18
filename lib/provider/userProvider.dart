@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/cartProducts.dart';
@@ -6,6 +7,7 @@ import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/models/users.dart';
 import 'package:foodDelivery/service/orderServices.dart';
 import 'package:foodDelivery/service/userService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
@@ -47,7 +49,8 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> signUp(String firstName, String lastName, String email, String password, String phoneNumber, String profilePicture) async {
+  Future<bool> signUp(
+      String firstName, String lastName, String email, String password, String phoneNumber, String profilePicture) async {
     try {
       _status = Status.Authenticating;
       notifyListeners();
@@ -127,12 +130,19 @@ class UserProvider with ChangeNotifier {
   }
 
   getOrders() async {
-    String userId  = (await FirebaseAuth.instance.currentUser()).uid;
+    String userId = (await FirebaseAuth.instance.currentUser()).uid;
     orders = await _orderServices.getUserOrders(userId: userId);
     print('the length of orders sknknsd ${orders.length}');
     print(userId);
     notifyListeners();
   }
+
+  // getUserByEmail() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String email = prefs.getString('email');
+  //   Firestore _firestore = Firestore.instance;
+  //   await _firestore.collection('users').where('emailAddress', isEqualTo: email).getDocuments();
+  // }
 
   Future<void> reloadUserModel() async {
     _userModel = await _userServices.getUserById(user.uid);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/cartProducts.dart';
+import 'package:foodDelivery/models/mpesa.dart';
 import 'package:foodDelivery/provider/appProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/products/singleProduct.dart';
@@ -11,7 +12,7 @@ import 'package:foodDelivery/widgets/favoritesButton.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:mpesa/mpesa.dart';
 import '../../styling.dart';
 
 enum Pages { cartList, orders }
@@ -29,6 +30,7 @@ class _CartScreenState extends State<CartScreen> {
   ProductsService _productsService = new ProductsService();
   OrderServices _orderServices = OrderServices();
   String shopName;
+  Mpesa mpesa;
 
   @override
   Widget build(BuildContext context) {
@@ -220,13 +222,15 @@ class _CartScreenState extends State<CartScreen> {
                                         callback: () async {
                                           var uuid = Uuid();
                                           String id = uuid.v4();
-                                          _orderServices.createOrder(
+                                          await _orderServices.createOrder(
                                               userId: userProvider.user.uid,
                                               id: id,
                                               description: 'Paid Ksh ${userModelItem.totalCartPrice}',
                                               status: "ONGOING",
                                               totalPrice: userProvider.userModel.totalCartPrice,
                                               cart: userProvider.userModel.cart);
+                                          MpesaPayment.mpesa.lipaNaMpesa(
+                                              phoneNumber: '254723942008', amount: userModelItem.totalCartPrice, callbackUrl: '');
                                           for (CartModel cartItem in userModelItem.cart) {
                                             bool value = await userProvider.removeFromCart(cartItem: cartItem);
                                             if (value) {

@@ -42,7 +42,7 @@ class ProductsModel {
     _id = data[ID];
     _images = data[IMAGES];
     _name = data[NAME];
-    _price = data[PRICE];
+    _price = data[PRICE] as double;
     _quantity = data[QUANTITY];
     _sizes = data[SIZES];
     _status = data[STATUS];
