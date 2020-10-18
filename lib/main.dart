@@ -5,10 +5,10 @@ import 'package:foodDelivery/provider/shopProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/homeNavigation.dart';
 import 'package:foodDelivery/screens/loginSignUp/login.dart';
-import 'package:foodDelivery/screens/loginSignUp/onboarding.dart';
 import 'package:foodDelivery/styling.dart';
 import 'package:foodDelivery/widgets/loading.dart';
 import 'package:provider/provider.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,3 +56,4 @@ class ScreensController extends StatelessWidget {
     }
   }
 }
+

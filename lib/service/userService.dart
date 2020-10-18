@@ -59,6 +59,8 @@ class UserService {
   Future<UserModel> getUserById(String id) => _firestore.collection(UserModel.collection).document(id).get().then((doc) {
         return UserModel.fromSnapshot(doc);
       });
+  
+
   Future<void> updateUser(String firstName, String lastName, String phoneNumber, String emailAddress, String userId) async {
     try {
       return _firestore.collection('users').document(userId).updateData({

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/cartProducts.dart';
 import 'package:foodDelivery/models/mpesa.dart';
+import 'package:foodDelivery/models/users.dart';
 import 'package:foodDelivery/provider/appProvider.dart';
 import 'package:foodDelivery/provider/userProvider.dart';
 import 'package:foodDelivery/screens/products/singleProduct.dart';
@@ -29,8 +31,14 @@ class _CartScreenState extends State<CartScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsService _productsService = new ProductsService();
   OrderServices _orderServices = OrderServices();
+  Firestore _firestore = Firestore.instance;
   String shopName;
   Mpesa mpesa;
+  String phoneNumber = '';
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +194,15 @@ class _CartScreenState extends State<CartScreen> {
                       color: white,
                       fontWeight: FontWeight.normal,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      await _firestore
+                          .collection('users')
+                          .where(UserModel.ID, isEqualTo: userProvider.user.uid)
+                          .getDocuments()
+                          .then((QuerySnapshot value) {
+                        phoneNumber = value.documents[0].data[UserModel.PHONE].replaceFirst(RegExp(r'0'), '254');
+                        print('THE USER PHONE IS ' + phoneNumber.replaceFirst(RegExp(r'0'), '254'));
+                      });
                       if (userModelItem.totalCartPrice == 0) {
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
                             content: CustomText(
@@ -197,6 +213,7 @@ class _CartScreenState extends State<CartScreen> {
 
                         return;
                       }
+
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -229,8 +246,23 @@ class _CartScreenState extends State<CartScreen> {
                                               status: "ONGOING",
                                               totalPrice: userProvider.userModel.totalCartPrice,
                                               cart: userProvider.userModel.cart);
-                                          MpesaPayment.mpesa.lipaNaMpesa(
-                                              phoneNumber: '254723942008', amount: userModelItem.totalCartPrice, callbackUrl: '');
+
+                                          MpesaPayment.mpesa
+                                              .lipaNaMpesa(
+                                                  transactionDescription: 'lipa na mpesa',
+                                                  accountReference: 'mtumbaApp',
+                                                  transactionType: 'CustomerPayBillOnline',
+                                                  businessShortCode: '174379',
+                                                  phoneNumber: phoneNumber,
+                                                  amount: userModelItem.totalCartPrice,
+                                                  callbackUrl:
+                                                      Uri(scheme: "https", host: "my-app.herokuapp.com", path: "/callback")
+                                                          .toString())
+                                              .then((value) {})
+                                              .catchError((e) {
+                                            print('THE ERROR IS ' + e.toString());
+                                          });
+
                                           for (CartModel cartItem in userModelItem.cart) {
                                             bool value = await userProvider.removeFromCart(cartItem: cartItem);
                                             if (value) {

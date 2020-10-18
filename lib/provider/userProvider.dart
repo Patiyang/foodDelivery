@@ -137,12 +137,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // getUserByEmail() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String email = prefs.getString('email');
-  //   Firestore _firestore = Firestore.instance;
-  //   await _firestore.collection('users').where('emailAddress', isEqualTo: email).getDocuments();
-  // }
+  
 
   Future<void> reloadUserModel() async {
     _userModel = await _userServices.getUserById(user.uid);
