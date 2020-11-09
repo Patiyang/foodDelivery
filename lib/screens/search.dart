@@ -16,9 +16,10 @@ class SearchScreen extends SearchDelegate {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
       textTheme: TextTheme(headline6: TextStyle(color: Colors.white, fontSize: 17)),
-      accentIconTheme: IconThemeData(color: grey),
+      // accentIconTheme: IconThemeData(color: grey),
+      iconTheme: IconThemeData(color: grey[800]),
       inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white)),
-      primaryColor: grey[100],
+      // primaryColor: grey[100],
       hintColor: Colors.yellow,
       primaryIconTheme: IconThemeData(color: Colors.white),
     );

@@ -23,7 +23,7 @@ void main() {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
+        theme: ThemeData(hintColor: grey[700],
           fontFamily: 'Helvetica',
           appBarTheme: AppBarTheme(color: orange[200]),
           scaffoldBackgroundColor: white,
