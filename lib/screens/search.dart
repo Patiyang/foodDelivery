@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodDelivery/models/products.dart';
 import 'package:foodDelivery/screens/products/singleProduct.dart';

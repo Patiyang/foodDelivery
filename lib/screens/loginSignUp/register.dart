@@ -69,7 +69,6 @@ class _RegisterState extends State<Register> {
                               children: <Widget>[
                                 GestureDetector(
                                     child: CircleAvatar(
-                                      // backgroundColor: profileImage != null ? Colors.transparent : orange[100],
                                       radius: 50,
                                       child: userImage(),
                                     ),
@@ -84,7 +83,6 @@ class _RegisterState extends State<Register> {
                                       if (v.isEmpty) {
                                         return 'FirstName field cannot be left empty';
                                       }
-
                                       return null;
                                     },
                                     containerColor: white.withOpacity(.8),
@@ -230,7 +228,7 @@ class _RegisterState extends State<Register> {
                                                       String profilePicture;
                                                       String imageName =
                                                           '${emailController.text}${DateTime.now().millisecondsSinceEpoch}.jpg';
-                                                      StorageTaskSnapshot snap = await storage
+                                                      StorageTaskSnapshot snap =  await storage
                                                           .child('profileImages/$imageName')
                                                           .putFile(imageToUpload)
                                                           .onComplete;
